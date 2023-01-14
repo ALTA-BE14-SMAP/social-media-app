@@ -1,5 +1,8 @@
 name: remote ssh command
-on: [push]
+on: 
+  push:
+    branches:
+      - main
 jobs:
   build:
     name: Build
@@ -37,8 +40,10 @@ jobs:
           touch res.txt
           echo "Hello from githubAction $(date)" >> res.txt
           sudo chmod 777 /var/run/docker.sock
-          docker stop ${{ secrets.CONTAINER }}
-          docker rm ${{ secrets.CONTAINER }}
+          # docker stop ${{ secrets.CONTAINER }}
+          docker kill $(docker ps -q)
+          # docker rm ${{ secrets.CONTAINER }}
+          docker rm $(docker ps -a -q)
           docker rmi ${{ secrets.DOCKER_USER }}/${{ secrets.IMAGE }}
           docker pull ${{ secrets.DOCKER_USER }}/${{ secrets.IMAGE }}
           docker run --name ${{ secrets.CONTAINER }} -e DBUSER=${{ secrets.DBUSER }} -e DBPASS=${{ secrets.DBPASSWORD }} -e DBHOST=${{ secrets.DBHOST }} -e DBPORT=${{ secrets.DBPORT }} -e DBNAME=${{ secrets.DBNAME }} -e JWT_KEY=${{ secrets.JWT_KEY }} -d -p 80:8000 ${{ secrets.DOCKER_USER }}/${{ secrets.IMAGE }}
