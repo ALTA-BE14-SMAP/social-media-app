@@ -27,8 +27,7 @@ func (uuc *userUseCase) Register(newUser user.Core) (user.Core, error) {
 
 		msg := ""
 		if strings.Contains(err.Error(), "duplicated") {
-			log.Println("Email sudah terdaftar")
-			msg = "Email sudah terdaftar"
+			msg = "email sudah terdaftar"
 		} else {
 			msg = "terdapat masalah pada server"
 		}
@@ -36,4 +35,28 @@ func (uuc *userUseCase) Register(newUser user.Core) (user.Core, error) {
 	}
 
 	return res, nil
+}
+
+func (uuc *userUseCase) Login(email, password string) (string, user.Core, error) {
+
+	res, err := uuc.qry.Login(email)
+
+	if err != nil {
+		log.Println("query login error", err.Error())
+		msg := ""
+		if strings.Contains(err.Error(), "not found") {
+			msg = "data tidak ditemukan"
+		} else {
+			msg = "terdapat masalah pada server"
+		}
+		return "", user.Core{}, errors.New(msg)
+	}
+	log.Println("ini dari db:", res.Password)
+	if err := helper.ComparePassword(res.Password, password); err != nil {
+		return "", user.Core{}, errors.New("password tidak sesuai")
+	}
+
+	useToken, _ := helper.GenerateJWT(int(res.ID))
+
+	return useToken, res, nil
 }
