@@ -30,8 +30,10 @@ func PrintErrorResponse(msg string) (int, interface{}) {
 	}
 
 	if strings.Contains(msg, "server") || strings.Contains(msg, "Error") {
+		resp["message"] = "data tidak bisa diolah"
 		code = http.StatusInternalServerError
 	} else if strings.Contains(msg, "format") {
+		resp["message"] = "kesalahan input"
 		code = http.StatusBadRequest
 	} else if strings.Contains(msg, "tidak ditemukan") {
 		code = http.StatusNotFound

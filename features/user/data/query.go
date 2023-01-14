@@ -20,19 +20,15 @@ func New(db *gorm.DB) user.UserData {
 }
 
 func (uq *userQuery) Duplicate(email string) error {
-	res := Users{}
-	qry := uq.db.Where("email = ?", email).First(&res)
-	if qry.RowsAffected <= 0 {
-		// log.Println("select user query error : data not found")
-		// return errors.New("record not found")
-		return nil
-	}
-	err := qry.Error
-	if err != nil {
-		log.Println("select email query error :", err.Error())
-		return errors.New("server error")
-	}
-	if len(res.Email) > 0 {
+	var res uint
+	row := uq.db.Raw(`
+	SELECT u.id
+	FROM users u 
+	WHERE u.email = ?
+	AND deleted_at IS NULL;
+	`, email).Row()
+	row.Scan(&res)
+	if res > 0 {
 		return errors.New("email is duplicated")
 	}
 	return nil
@@ -56,5 +52,24 @@ func (uq *userQuery) Register(newUser user.Core) (user.Core, error) {
 		}
 		return user.Core{}, errors.New(msg)
 	}
-	return user.Core{}, nil
+	newUser.ID = cnv.ID
+	return newUser, nil
+}
+
+func (uq *userQuery) Login(email string) (user.Core, error) {
+	log.Println(email)
+	res := Users{}
+	row := uq.db.Raw(`
+	SELECT u.id, u.name, u.email, u.password 
+	FROM users u 
+	WHERE u.email = ?
+	AND deleted_at IS NULL;
+	`, email).Row()
+	row.Scan(&res.ID, &res.Name, &res.Email, &res.Password)
+	log.Println(res)
+
+	// if res.ID <= 0 {
+	// 	return user.Core{}, errors.New("record not found")
+	// }
+	return ToCore(res), nil
 }
