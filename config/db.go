@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"log"
+	users "social-media-app/features/user/data"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -18,4 +19,9 @@ func InitDB(ac AppConfig) *gorm.DB {
 	}
 
 	return db
+}
+
+func Migrate(db *gorm.DB) {
+	db.AutoMigrate(users.Users{})
+	// db.AutoMigrate(books.Books{})
 }
