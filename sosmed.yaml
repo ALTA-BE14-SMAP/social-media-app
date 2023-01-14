@@ -1,0 +1,500 @@
+openapi: 3.0.3
+info:
+  title: Sosmed API
+  description: |-
+    Ini adalah dokumentasi API untuk
+    
+    Sosmed list service yang dibuat di alterra
+  contact:
+    name: Deva
+    email: techmin7@gmail.com
+  version: 1.0.0
+servers:
+  - url: 127.0.0.1
+    description: digunakan untuk ujicoba
+  - url: link nyusul
+    description: digunakan untuk running
+  
+tags:
+  - name: Users
+  - name: Auth
+  - name: Contents
+  - name: Comments
+ 
+paths:
+  /registers:
+    post:
+      tags:
+        - "Users"
+      description: digunakan untuk menambahkan user
+      summary: register user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+            example:
+              name: "Deva"
+              email: "techmin7@gmail.com"
+              password: "rahasia"
+      responses:
+        201:
+          description: "Berhasil insert data"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "success add data"
+        400:
+          $ref: '#/components/responses/400'
+        500:
+          $ref: '#/components/responses/500'
+  /login:
+    post:
+      tags:
+        - "Auth"
+      description: digunakan untuk masuk kedalam sistem
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+      responses:
+        200:
+          description: "Berhasil login"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseObject'
+              example:
+                data:
+                  id: 1
+                  email: "techmin7@gmail.com"
+                  token: "9u2npf9un24u"
+                message: "success login"
+        404:
+          description: "Kesalahan input data dari user"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "data tidak ditemukan"
+        400:
+          $ref: '#/components/responses/400'
+        500:
+          $ref: '#/components/responses/500'
+  /users:
+    patch:
+      tags:
+        - "Users"
+      summary: Update data user
+      description: Memperbaharui data user
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: "Deva"
+                date_of_birth: "1995-07-10"
+                contact: "081234567"
+                email: "techmin7@gmail.com"
+                password: "rahasia"
+      responses:
+        200:
+          description: "Berhasil update"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: "succes"
+                message: "update berhasil"
+        400:
+          $ref: '#/components/responses/400'
+        500:
+          $ref: '#/components/responses/500'
+    delete:
+      tags:
+        - "Users"
+      summary: Delete data user
+      description: Menghapus data user
+      security:
+        - JWTAuth : []
+      responses:
+        200:
+          description: "Berhasil delete"
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: "success"
+                  message: "Delete user berhasil"
+        400:
+          $ref: '#/components/responses/400'
+        500:
+          $ref: '#/components/responses/500'
+  /contents:
+    post:
+      tags:
+        - "Contents"
+      summary: Add content to user
+      description: menambahkan posting konten ke user
+      security:
+        - JWTAuth : []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                content: "halo gaes ketemu lagi dengan aku deva wkwkwkwkwk"
+                image: "www.google.com"
+      responses:
+        201:
+          description: Posting berhasil.
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: "success"
+                  message: "posting content berhasil"
+        400:
+          $ref: '#/components/responses/400'
+        500:
+          $ref: '#/components/responses/500'
+  /contents/{content_id}: 
+    patch:
+      tags:
+        - "Contents"
+      summary: edit content to user
+      description: mengubah content user
+      security:
+        - JWTAuth : []
+      parameters:
+        - name: content_id
+          description: "id content"
+          required: true
+          in: path
+          schema:
+            description: "id content"
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                content: "hiiiiii gaes kembali ketemu lagi dengan aku deva wkwkwkwkwk"
+                image: "www.bing.com"
+      responses:
+        200:
+          description: "Berhasil update"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseObject'
+              example:
+                status: "succes"
+                message: "update berhasil"
+        400:
+          $ref: '#/components/responses/400'
+        500:
+          $ref: '#/components/responses/500'
+  
+    delete:
+      tags:
+        - "Contents"
+      summary: Delete content user
+      description: Menghapus konten user
+      security:
+        - JWTAuth : []
+      parameters:
+        - name: content_id
+          description: "id content"
+          required: true
+          in: path
+          schema:
+            description: "id content"
+            type: integer
+            example: 1
+      responses:
+        200:
+          description: "Berhasil delete"
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: "success"
+                  message: "Delete content berhasil"
+        400:
+          $ref: '#/components/responses/400'
+        500:
+          $ref: '#/components/responses/500'
+    get:
+      tags:
+        - "Contents"
+      summary: get content user by id
+      description: menampilkan data content dari user id
+      parameters:
+        - name: content_id
+          description: "id content"
+          required: true
+          in: path
+          schema:
+            description: "id content"
+            type: integer
+            example: 1
+      responses:
+        200:
+          description: data content dari user id
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: "success"
+                  message: "success get content by user id"
+                  data:
+                      id : 1
+                      content: "hiiiiii gaes kembali ketemu lagi dengan aku deva wkwkwkwkwk"
+                      image: "www.bing.com"
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+  /comments/{content_id}:
+    post:
+      tags:
+        - "Comments"
+      summary: Add comment to user content by content id
+      description: menambahkan komentar pada content berdasar id content
+      security:
+        - JWTAuth : []
+      parameters:
+        - name: content_id
+          description: "id content"
+          required: true
+          in: path
+          schema:
+            description: "id content"
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                content: "contoh komentar nih gaes wkwkwk"
+      responses:
+        201:
+          description: Komentar berhasil.
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: "success"
+                  message: "Comments content berhasil"
+        400:
+          $ref: '#/components/responses/400'
+        500:
+          $ref: '#/components/responses/500'
+    delete:
+      tags:
+        - "Comments"
+      summary: Delete comment to user content by content id
+      description: menghapus komentar pada content berdasar id content
+      security:
+        - JWTAuth : []
+      parameters:
+        - name: content_id
+          description: "id content"
+          required: true
+          in: path
+          schema:
+            description: "id content"
+            type: integer
+            example: 1
+      responses:
+        200:
+          description: "Berhasil delete"
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: "success"
+                  message: "Delete content berhasil"
+        400:
+          $ref: '#/components/responses/400'
+        500:
+          $ref: '#/components/responses/500'
+    get:
+      tags:
+        - "Comments"
+      summary: Get comment to user content by content id
+      description: menampilkan data comment dari content id
+      parameters:
+        - name: content_id
+          description: "id content"
+          required: true
+          in: path
+          schema:
+            description: "id content"
+            type: integer
+            example: 1
+      responses:
+        200:
+          description: data comment dari content id
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: "success"
+                  message: "success get comment by content id"
+                  data:
+                      id : 1
+                      user_id: 1
+                      content: "hiiiiii gaes ini contoh komentar wkwkwkwkwk"
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+components:
+  securitySchemes:
+    JWTAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "user Token"  
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+    Content:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        user_id:
+          type: integer
+          format: int64
+        image_id:
+          type: integer
+          format: int64
+        content:
+          type: string
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        user_id:
+          type: integer
+          format: int64
+        image_id:
+          type: integer
+          format: int64
+        content:
+          type: string
+        
+    responseObject:
+      type: object
+      properties:
+        data:
+          type: object
+        message:
+          type: string
+    responseObjectArr:
+      type: object
+      properties:
+        data:
+          type: array
+          items: 
+            type: object
+        message:
+          type: string
+  responses:
+    400:
+      description: "Kesalahan dari user"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+          example:
+            message: "kesalahan input"
+    404:
+      description: "Not Found"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+          example:
+            status: "failed"
+            message: "data not found"
+    500:
+      description: "Kesalahan dari server"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+            example:
+              message: "data tidak bisa diolah"
