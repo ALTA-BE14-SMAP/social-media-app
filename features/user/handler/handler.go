@@ -66,7 +66,7 @@ func (uc *userControll) Update() echo.HandlerFunc {
 		//-----------
 		file, err := c.FormFile("file")
 		if err != nil {
-			return err
+			file = nil
 		}
 
 		token := c.Get("user")
