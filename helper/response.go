@@ -10,12 +10,17 @@ func PrintSuccessReponse(message string, data ...interface{}) interface{} {
 	if message != "" {
 		resp["message"] = message
 	}
+
 	if len(data) == 0 {
 		return resp
 	} else if len(data) < 2 {
-		resp["data"] = data[0]
+		if data[0] != "" {
+			resp["data"] = data[0]
+		}
 	} else {
-		resp["data"] = data[0]
+		if data[0] != "" {
+			resp["data"] = data[0]
+		}
 		resp["token"] = data[1].(string)
 	}
 
