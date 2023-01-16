@@ -9,25 +9,40 @@ import (
 type Users struct {
 	gorm.Model
 	// Books    []data.Books `gorm:"foreignKey:UserID"`
-	Name     string
-	Email    string
-	Password string
+	Name        string
+	Username    string `gorm:"unique"`
+	Email       string `gorm:"unique"`
+	DateOfBith  string
+	Photo       string
+	PhoneNumber string
+	AboutMe     string
+	Password    string
 }
 
 func ToCore(data Users) user.Core {
 	return user.Core{
-		ID:       data.ID,
-		Name:     data.Name,
-		Email:    data.Email,
-		Password: data.Password,
+		ID:          data.ID,
+		Name:        data.Name,
+		Email:       data.Email,
+		Password:    data.Password,
+		Username:    data.Username,
+		Photo:       data.Photo,
+		DateOfBith:  data.DateOfBith,
+		PhoneNumber: data.PhoneNumber,
+		AboutMe:     data.AboutMe,
 	}
 }
 
 func CoreToData(data user.Core) Users {
 	return Users{
-		Model:    gorm.Model{ID: data.ID},
-		Name:     data.Name,
-		Email:    data.Email,
-		Password: data.Password,
+		Model:       gorm.Model{ID: data.ID},
+		Name:        data.Name,
+		Email:       data.Email,
+		Password:    data.Password,
+		Username:    data.Username,
+		Photo:       data.Photo,
+		DateOfBith:  data.DateOfBith,
+		PhoneNumber: data.PhoneNumber,
+		AboutMe:     data.AboutMe,
 	}
 }

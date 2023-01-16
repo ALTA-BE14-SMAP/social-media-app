@@ -41,11 +41,53 @@ func (uc *userControll) Login() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, "format inputan salah")
 		}
 
-		token, res, err := uc.srv.Login(input.Email, input.Password)
+		// token, res, err := uc.srv.Login(input.Email, input.Password)
+		token, _, err := uc.srv.Login(*ToCore(input))
 		if err != nil {
 			return c.JSON(helper.PrintErrorResponse(err.Error()))
 		}
 
-		return c.JSON(http.StatusOK, helper.PrintSuccessReponse("success login", ToResponse(res), token))
+		return c.JSON(http.StatusOK, helper.PrintSuccessReponse("success login", "", token))
+		// return c.JSON(http.StatusOK, helper.PrintSuccessReponse("success login", ToResponse(res), token))
+	}
+}
+
+func (uc *userControll) Update() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		// Read form fields
+		input := user.Core{}
+		if err := c.Bind(&input); err != nil {
+			return c.JSON(http.StatusBadRequest, "format inputan salah, cek json")
+		}
+		//-----------
+		// Read file
+		//-----------
+		file, err := c.FormFile("file")
+		if err != nil {
+			file = nil
+		}
+
+		token := c.Get("user")
+		// res, err := uc.srv.Update(input, token, file)
+		_, err = uc.srv.Update(input, token, file)
+
+		if err != nil {
+			return c.JSON(helper.PrintErrorResponse(err.Error()))
+		}
+
+		// return c.JSON(http.StatusOK, helper.PrintSuccessReponse("berhasil update profil", ToResponse(res)))
+		return c.JSON(http.StatusOK, helper.PrintSuccessReponse("berhasil update profil"))
+	}
+}
+
+func (uc *userControll) Profile() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		token := c.Get("user")
+
+		res, err := uc.srv.Profile(token)
+		if err != nil {
+			return c.JSON(helper.PrintErrorResponse(err.Error()))
+		}
+		return c.JSON(http.StatusOK, helper.PrintSuccessReponse("berhasil lihat profil", ToResponse(res)))
 	}
 }
