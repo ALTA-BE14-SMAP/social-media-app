@@ -32,6 +32,7 @@ func main() {
 	e.PUT("/users", userHdl.Update(), middleware.JWT([]byte(config.JWT_KEY)))
 	e.GET("/users", userHdl.ListUsers(), middleware.JWT([]byte(config.JWT_KEY)))
 	e.GET("/myprofile", userHdl.Profile(), middleware.JWT([]byte(config.JWT_KEY)))
+	e.DELETE("/users", userHdl.Deactive(), middleware.JWT([]byte(config.JWT_KEY)))
 
 	if err := e.Start(":8000"); err != nil {
 		log.Println(err.Error())

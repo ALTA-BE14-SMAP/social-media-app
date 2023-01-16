@@ -103,3 +103,19 @@ func (uq *userQuery) ListUsers() ([]user.Core, error) {
 	}
 	return ToCoreArr(res), nil
 }
+
+func (uq *userQuery) Deactive(id uint) error {
+	user := Users{
+		Model: gorm.Model{ID: id},
+	}
+	qry := uq.db.Delete(&user)
+	if qry.RowsAffected <= 0 {
+		return errors.New("record not found")
+	}
+	err := qry.Error
+	if err != nil {
+		log.Println("delete user query error :", err.Error())
+		return err
+	}
+	return nil
+}

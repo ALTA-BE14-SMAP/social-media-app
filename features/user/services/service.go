@@ -191,3 +191,21 @@ func (uuc *userUseCase) ListUsers() ([]user.Core, error) {
 	}
 	return res, nil
 }
+
+func (uuc *userUseCase) Deactive(token interface{}) error {
+	id := helper.ExtractToken(token)
+	if id <= 0 {
+		return errors.New("user tidak ditemukan harap login lagi")
+	}
+	err := uuc.qry.Deactive(uint(id))
+	if err != nil {
+		msg := ""
+		if strings.Contains(err.Error(), "not found") {
+			msg = "data tidak ditemukan"
+		} else {
+			msg = "terjadi kesalahan pada server"
+		}
+		return errors.New(msg)
+	}
+	return nil
+}
