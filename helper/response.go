@@ -38,13 +38,14 @@ func PrintErrorResponse(msg string) (int, interface{}) {
 		resp["message"] = "data tidak bisa diolah"
 		code = http.StatusInternalServerError
 	} else if strings.Contains(msg, "format") {
-		resp["message"] = "kesalahan input"
 		code = http.StatusBadRequest
 	} else if strings.Contains(msg, "tidak ditemukan") {
 		code = http.StatusNotFound
 	} else if strings.Contains(msg, "password") {
 		code = http.StatusUnauthorized
 	} else if strings.Contains(msg, "terdaftar") {
+		code = http.StatusBadRequest
+	} else if strings.Contains(msg, "required") {
 		code = http.StatusBadRequest
 	} else {
 		code = http.StatusInternalServerError
