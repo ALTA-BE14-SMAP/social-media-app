@@ -43,8 +43,10 @@ func PrintErrorResponse(msg string) (int, interface{}) {
 		code = http.StatusNotFound
 	} else if strings.Contains(msg, "password") {
 		code = http.StatusUnauthorized
-	} else if strings.Contains(msg, "terdaftar") {
-		code = http.StatusBadRequest
+	} else if strings.Contains(msg, "sudah terdaftar") {
+		code = http.StatusConflict
+	} else if strings.Contains(msg, "belum terdaftar") {
+		code = http.StatusNotFound
 	} else if strings.Contains(msg, "required") {
 		code = http.StatusBadRequest
 	} else {

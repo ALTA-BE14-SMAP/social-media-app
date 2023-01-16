@@ -8,12 +8,12 @@ import (
 
 type Core struct {
 	ID          uint
-	Name        string `validate:"required" json:"name" form:"name"`
-	Username    string `validate:"required,alphanum" json:"username" form:"username"`
-	Email       string `validate:"required,email" json:"email" form:"email"`
+	Name        string `json:"name" form:"name"`
+	Username    string `validate:"alphanum" json:"username" form:"username"`
+	Email       string `validate:"email" json:"email" form:"email"`
 	Photo       string
 	DateOfBith  string `json:"date_of_birth" form:"date_of_birth"`
-	PhoneNumber string `json:"phone_number" form:"phone_number"`
+	PhoneNumber string `validate:"numeric" json:"phone_number" form:"phone_number"`
 	AboutMe     string `json:"about_me" form:"about_me"`
 	Password    string `json:"password" form:"password"`
 }

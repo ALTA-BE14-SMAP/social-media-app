@@ -5,8 +5,8 @@ import (
 )
 
 type LoginRequest struct {
-	Username string `json:"username" form:"username"`
-	Email    string `json:"email" form:"email"`
+	Username string `validate:"required,alphanum" json:"username" form:"username"`
+	Email    string `validate:"required,email" json:"email" form:"email"`
 	Password string `json:"password" form:"password"`
 }
 
@@ -23,8 +23,8 @@ func ToCore(data interface{}) *user.Core {
 	switch data.(type) {
 	case LoginRequest:
 		cnv := data.(LoginRequest)
-		res.Email = cnv.Email
 		res.Username = cnv.Username
+		res.Email = cnv.Email
 		res.Password = cnv.Password
 	case RegisterRequest:
 		cnv := data.(RegisterRequest)

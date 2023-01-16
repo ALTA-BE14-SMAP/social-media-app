@@ -1,3 +1,4 @@
+
 # social-media-app
 
 A brief description of what this project does and who it's for
@@ -7,12 +8,26 @@ A brief description of what this project does and who it's for
 
 ## IP Server : 54.254.27.167
 
-#### User Register
+
+#### Status Codes
+
+| Status Code | Description |
+| :--- | :--- |
+| 200 | `OK` |
+| 201 | `CREATED` |
+| 400 | `BAD REQUEST` |
+| 401 | `UNAUTHORIZED` |
+| 404 | `NOT FOUND` |
+| 409 | `CONFLICT` |
+| 500 | `INTERNAL SERVER ERROR` |
+
+### User Register
 
 ```http
   POST /register
 ```
 
+##### Form/JSON
 | Field | Type     | Description                |
 | :-------- | :------- | :------------------------- |
 | `name` | `string` | **Required**. Full name user |
@@ -29,7 +44,7 @@ A brief description of what this project does and who it's for
 }
 ```
 ##### Responses
-###### 200 OK
+###### 201 Created
 
 ```javascript
 {
@@ -37,7 +52,7 @@ A brief description of what this project does and who it's for
 }
 ```
 
-###### 400 Bad Request
+###### 409 Conflict
 
 ```javascript
 {
@@ -69,34 +84,107 @@ A brief description of what this project does and who it's for
 }
 ```
 
-#### User Login
+###### 500 Internal Server Error
+
+```javascript
+{
+	"message": "data tidak bisa diolah"
+}
+```
+### User Login
 
 ```http
   POST /login
 ```
 ##### with email
+##### Form/JSON
 | Field | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `email`      | `email` | **Required**. Must email format |
 | `password`      | `string` | **Required** |
 
+```javascript
+{
+  "email"    : "amr@alterra.id",
+  "password" : "rizal123"
+}
+```
+
 ##### with username
+##### Form/JSON
 | Field | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `username`      | `string` | **Required**. Alphanumeric |
 | `password`      | `string` | **Required** |
 
+```javascript
+{
+  "username" : "amr",
+  "password" : "rizal123"
+}
+```
 
-#### User Update
+##### Responses
+###### 200 OK
+
+```javascript
+{
+	"message": "success login",
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2NzM4NTk2NTIsInVzZXJJRCI6MX0.A4KwWP8vn_VMOufnLPX6hF_VLCHtI1WvY-Za8sDQhuE"
+}
+```
+###### 400 Bad Request
+
+```javascript
+{
+	"message": "format email salah"
+}
+```
+
+###### 400 Bad Request
+
+```javascript
+{
+	"message": "format username salah"
+}
+```
+
+###### 401 Unauthorized
+
+```javascript
+{
+	"message": "password tidak sesuai"
+}
+```
+###### 404 Not Found
+
+```javascript
+{
+	"message": "email/username belum terdaftar"
+}
+```
+###### 500 Internal Server Error
+
+```javascript
+{
+	"message": "data tidak bisa diolah"
+}
+```
+
+
+
+
+### User Update
 
 ```http
   PUT /users 
 ```
-##### Authorization
-| Header | Type     | Description                       |
+##### Authorization JWT
+| Authentication | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `bearer token`      | `string` | **Required**. Your API key |
+| `bearer token`      | `string` | **Required**. Your token key |
 
+##### Multipart Form
 | Field | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `name`      | `string` | **Optional**. |
@@ -108,4 +196,97 @@ A brief description of what this project does and who it's for
 | `Password`      | `string` | **Optional**.  |
 | `file`      | `file` | **Optional**. file must image |
 
+##### Responses
+###### 200 OK
 
+```javascript
+{
+	"message": "berhasil update profil"
+}
+```
+
+###### 400 Bad Request
+
+```javascript
+{
+	"message": "format email salah"
+}
+```
+
+###### 400 Bad Request
+
+```javascript
+{
+	"message": "format username salah"
+}
+```
+
+###### 400 Bad Request
+
+```javascript
+{
+	"message": "format phone_number salah"
+}
+```
+
+###### 401 Unauthorized
+
+```javascript
+{
+	"message": "invalid or expired jwt"
+}
+```
+###### 500 Internal Server Error
+
+```javascript
+{
+	"message": "data tidak bisa diolah"
+}
+```
+
+## User Profile
+
+```http
+  GET /myprofile 
+```
+
+##### Authorization JWT
+| Authentication | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `bearer token`      | `string` | **Required**. Your token key |
+
+
+##### Responses
+###### 200 OK
+
+```javascript
+{
+	"data": {
+		"id": 4,
+		"name": "Rizal4",
+		"email": "zaki@gmail.com",
+		"username": "amrzaki",
+		"photo": "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1673863241.png",
+		"date_of_birth": "",
+		"phone_number": "08123022342",
+		"about_me": "who am i"
+	},
+	"message": "berhasil lihat profil"
+}
+```
+
+###### 401 Unauthorized
+
+```javascript
+{
+	"message": "invalid or expired jwt"
+}
+```
+
+###### 500 Internal Server Error
+
+```javascript
+{
+	"message": "data tidak bisa diolah"
+}
+```

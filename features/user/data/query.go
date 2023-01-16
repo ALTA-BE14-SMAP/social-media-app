@@ -43,7 +43,6 @@ func (uq *userQuery) Login(newUser user.Core) (user.Core, error) {
 		res Users
 		row *sql.Row
 	)
-	log.Println(newUser)
 	if len(newUser.Email) > 0 {
 		row = uq.db.Raw(`
 		SELECT u.id, u.password 
