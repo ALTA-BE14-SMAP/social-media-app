@@ -43,29 +43,31 @@ func (uq *userQuery) Login(newUser user.Core) (user.Core, error) {
 		res Users
 		row *sql.Row
 	)
-	log.Println(len(newUser.Email))
+	log.Println(newUser)
 	if len(newUser.Email) > 0 {
-		log.Println(len(newUser.Email), "asem")
-
 		row = uq.db.Raw(`
 		SELECT u.id, u.password 
 		FROM users u 
 		WHERE u.email = ?
 		AND deleted_at IS NULL;
 		`, newUser.Email).Row()
-	} else {
+	} else if len(newUser.Username) > 0 {
 		row = uq.db.Raw(`
 		SELECT u.id, u.password 
 		FROM users u 
 		WHERE u.username = ?
 		AND deleted_at IS NULL;
 		`, newUser.Username).Row()
-	}
-	row.Scan(&res.ID, &res.Password)
-
-	if res.ID <= 0 {
+	} else {
 		return user.Core{}, errors.New("record not found")
 	}
+
+	err := row.Scan(&res.ID, &res.Password)
+	if err != nil {
+		log.Println("login query error :", err.Error())
+		return user.Core{}, err
+	}
+
 	return ToCore(res), nil
 }
 
@@ -92,4 +94,17 @@ func (uq *userQuery) Update(id uint, updateData user.Core) (user.Core, error) {
 	}
 	cnv.ID = id
 	return ToCore(cnv), nil
+}
+
+func (uq *userQuery) ListUsers() ([]user.Core, error) {
+	res := []Users{}
+	err := uq.db.Select("id", "username", "photo").Find(&res).Error
+	if err != nil {
+		log.Println("Mybook query error :", err.Error())
+		return []user.Core{}, err
+	}
+	if len(res) == 0 {
+		return []user.Core{}, errors.New("record not found")
+	}
+	return ToCoreArr(res), nil
 }
