@@ -32,7 +32,15 @@ func (uuc *userUseCase) Register(newUser user.Core) (user.Core, error) {
 		if _, ok := err.(*validator.InvalidValidationError); ok {
 			log.Println(err)
 		}
-		return user.Core{}, errors.New("format input user tidak sesuai dengan arahan")
+		msg := ""
+		if strings.Contains(err.Error(), "required") {
+			msg = "field required wajib diisi"
+		} else if strings.Contains(err.Error(), "email") {
+			msg = "format email salah"
+		} else if strings.Contains(err.Error(), "Username") {
+			msg = "format username salah"
+		}
+		return user.Core{}, errors.New(msg)
 	}
 
 	newUser.Password = helper.HashPassword(newUser.Password)
