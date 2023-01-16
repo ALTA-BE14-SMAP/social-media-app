@@ -33,6 +33,15 @@ func ToCore(data Users) user.Core {
 	}
 }
 
+func ToCoreArr(data []Users) []user.Core {
+	arrRes := []user.Core{}
+	for _, v := range data {
+		tmp := ToCore(v)
+		arrRes = append(arrRes, tmp)
+	}
+	return arrRes
+}
+
 func CoreToData(data user.Core) Users {
 	return Users{
 		Model:       gorm.Model{ID: data.ID},

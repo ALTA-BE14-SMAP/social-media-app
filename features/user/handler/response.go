@@ -25,3 +25,27 @@ func ToResponse(data user.Core) UserReponse {
 		AboutMe:     data.AboutMe,
 	}
 }
+
+// get users
+type GetUserResponse struct {
+	ID       uint   `json:"id"`
+	Username string `json:"username"`
+	Photo    string `json:"photo"`
+}
+
+func ToGetUserResponse(data user.Core) GetUserResponse {
+	return GetUserResponse{
+		ID:       data.ID,
+		Username: data.Username,
+		Photo:    data.Photo,
+	}
+}
+
+func ToGetUsersResArr(data []user.Core) []GetUserResponse {
+	res := []GetUserResponse{}
+	for _, v := range data {
+		tmp := ToGetUserResponse(v)
+		res = append(res, tmp)
+	}
+	return res
+}

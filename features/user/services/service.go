@@ -56,13 +56,12 @@ func (uuc *userUseCase) Login(newUser user.Core) (string, user.Core, error) {
 		res user.Core
 		err error
 	)
-
 	res, err = uuc.qry.Login(newUser)
 
 	if err != nil {
 		log.Println("query login error", err.Error())
 		msg := ""
-		if strings.Contains(err.Error(), "not found") {
+		if strings.Contains(err.Error(), "not found") || strings.Contains(err.Error(), "no rows") {
 			msg = "email/password belum terdaftar"
 		} else {
 			msg = "terdapat masalah pada server"
@@ -133,12 +132,25 @@ func (uuc *userUseCase) Update(updateData user.Core, token interface{}, file *mu
 	if err != nil {
 		msg := ""
 		if strings.Contains(err.Error(), "not found") {
-			msg = "buku tidak ditemukan"
+			msg = "data tidak ditemukan"
 		} else {
 			msg = "terjadi kesalahan pada server"
 		}
 		return user.Core{}, errors.New(msg)
 	}
 
+	return res, nil
+}
+func (uuc *userUseCase) ListUsers() ([]user.Core, error) {
+	res, err := uuc.qry.ListUsers()
+	if err != nil {
+		msg := ""
+		if strings.Contains(err.Error(), "not found") {
+			msg = "data tidak ditemukan"
+		} else {
+			msg = "terjadi kesalahan pada server"
+		}
+		return []user.Core{}, errors.New(msg)
+	}
 	return res, nil
 }
