@@ -52,13 +52,6 @@ A brief description of what this project does and who it's for
 }
 ```
 
-###### 409 Conflict
-
-```javascript
-{
-	"message": "email/username sudah terdaftar"
-}
-```
 
 ###### 400 Bad Request
 
@@ -81,6 +74,14 @@ A brief description of what this project does and who it's for
 ```javascript
 {
 	"message": "format username salah"
+}
+```
+
+###### 409 Conflict
+
+```javascript
+{
+	"message": "email/username sudah terdaftar"
 }
 ```
 
@@ -228,12 +229,33 @@ A brief description of what this project does and who it's for
 	"message": "format phone_number salah"
 }
 ```
+###### 400 Bad Request
+
+```javascript
+{
+	"message": "format input file type tidak diizinkan"
+}
+```
+###### 400 Bad Request
+
+```javascript
+{
+	"message": "format input file size tidak diizinkan, size melebihi 1 MB"
+}
+```
 
 ###### 401 Unauthorized
 
 ```javascript
 {
 	"message": "invalid or expired jwt"
+}
+```
+###### 409 Conflict
+
+```javascript
+{
+	"message": "email/username sudah terdaftar"
 }
 ```
 ###### 500 Internal Server Error
@@ -271,6 +293,68 @@ A brief description of what this project does and who it's for
 		"phone_number": "08123022342",
 		"about_me": "who am i"
 	},
+	"message": "berhasil lihat profil"
+}
+```
+
+###### 401 Unauthorized
+
+```javascript
+{
+	"message": "invalid or expired jwt"
+}
+```
+
+###### 500 Internal Server Error
+
+```javascript
+{
+	"message": "data tidak bisa diolah"
+}
+```
+## User Get All
+
+```http
+  GET /users 
+```
+
+##### Authorization JWT
+| Authentication | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `bearer token`      | `string` | **Required**. Your token key |
+
+##### Responses
+###### 200 OK
+
+```javascript
+{
+	"data": [
+		{
+			"id": 1,
+			"username": "amrzaki1",
+			"photo": "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1673872495.jpeg"
+		},
+		{
+			"id": 2,
+			"username": "amrzaki2",
+			"photo": "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1673872558.jpg"
+		},
+		{
+			"id": 3,
+			"username": "amrzaki3",
+			"photo": "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1673872643.jpg"
+		},
+		{
+			"id": 4,
+			"username": "amrzaki",
+			"photo": "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1673863241.png"
+		},
+		{
+			"id": 10,
+			"username": "amr",
+			"photo": "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1673870507.png"
+		}
+	],
 	"message": "berhasil lihat profil"
 }
 ```

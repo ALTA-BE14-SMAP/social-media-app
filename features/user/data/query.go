@@ -83,10 +83,6 @@ func (uq *userQuery) Profile(id uint) (user.Core, error) {
 func (uq *userQuery) Update(id uint, updateData user.Core) (user.Core, error) {
 	cnv := CoreToData(updateData)
 	qry := uq.db.Model(&cnv).Where("id = ?", id).Updates(cnv)
-	if qry.RowsAffected <= 0 {
-		return user.Core{}, errors.New("record not found")
-	}
-
 	if err := qry.Error; err != nil {
 		log.Println("update user query error :", err.Error())
 		return user.Core{}, err
