@@ -91,3 +91,12 @@ func (uc *userControll) Profile() echo.HandlerFunc {
 		return c.JSON(http.StatusOK, helper.PrintSuccessReponse("berhasil lihat profil", ToResponse(res)))
 	}
 }
+func (uc *userControll) ListUsers() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		res, err := uc.srv.ListUsers()
+		if err != nil {
+			return c.JSON(helper.PrintErrorResponse(err.Error()))
+		}
+		return c.JSON(http.StatusOK, helper.PrintSuccessReponse("berhasil lihat profil", ToGetUsersResArr(res)))
+	}
+}

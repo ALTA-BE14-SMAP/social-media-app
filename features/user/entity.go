@@ -23,6 +23,8 @@ type UserHandler interface {
 	Login() echo.HandlerFunc
 	Profile() echo.HandlerFunc
 	Update() echo.HandlerFunc
+	ListUsers() echo.HandlerFunc
+
 	// Deactive() echo.HandlerFunc
 }
 
@@ -31,6 +33,7 @@ type UserService interface {
 	Login(newUser Core) (string, Core, error)
 	Profile(token interface{}) (Core, error)
 	Update(newUser Core, token interface{}, image *multipart.FileHeader) (Core, error)
+	ListUsers() ([]Core, error)
 	// Deactive(id uint) error
 }
 
@@ -39,5 +42,6 @@ type UserData interface {
 	Login(newUser Core) (Core, error)
 	Profile(id uint) (Core, error)
 	Update(id uint, updateData Core) (Core, error)
+	ListUsers() ([]Core, error)
 	// Deactive(id uint) error
 }
