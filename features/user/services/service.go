@@ -114,9 +114,25 @@ func (uuc *userUseCase) Update(updateData user.Core, token interface{}, file *mu
 		return user.Core{}, errors.New("user tidak ditemukan harap login lagi")
 	}
 
-	err := helper.Validasi(updateData)
-	if err != nil {
-		return user.Core{}, err
+	if len(updateData.Email) > 0 {
+		err := helper.Validasi(helper.ToEmailLogin(updateData))
+		if err != nil {
+			return user.Core{}, err
+		}
+	}
+
+	if len(updateData.Username) > 0 {
+		err := helper.Validasi(helper.ToUsernameLogin(updateData))
+		if err != nil {
+			return user.Core{}, err
+		}
+	}
+
+	if len(updateData.PhoneNumber) > 0 {
+		err := helper.Validasi(helper.ToPhoneNumber(updateData))
+		if err != nil {
+			return user.Core{}, err
+		}
 	}
 
 	if file != nil {
@@ -126,7 +142,9 @@ func (uuc *userUseCase) Update(updateData user.Core, token interface{}, file *mu
 		}
 		err = helper.CheckFileSize(file.Size)
 		if err != nil {
-			return user.Core{}, errors.New("format input file size tidak diizinkan")
+			idx := strings.Index(err.Error(), ",")
+			msg := err.Error()
+			return user.Core{}, errors.New("format input file size tidak diizinkan, size melebihi" + msg[idx+1:])
 		}
 		extension, err := helper.CheckFileExtension(file.Filename)
 		if err != nil {
@@ -150,6 +168,8 @@ func (uuc *userUseCase) Update(updateData user.Core, token interface{}, file *mu
 		msg := ""
 		if strings.Contains(err.Error(), "not found") {
 			msg = "data tidak ditemukan"
+		} else if strings.Contains(err.Error(), "Duplicate") {
+			msg = "email/username sudah terdaftar"
 		} else {
 			msg = "terjadi kesalahan pada server"
 		}

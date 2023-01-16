@@ -18,13 +18,15 @@ type RegisterRequest struct {
 	Password string
 }
 
+type PhoneNumberRequest struct {
+	PhoneNumber string `validate:"numeric"`
+}
+
 type LoginUsernameRequest struct {
 	Username string `validate:"required,alphanum"`
-	Password string
 }
 type LoginEmailRequest struct {
-	Email    string `validate:"required,email"`
-	Password string
+	Email string `validate:"required,email"`
 }
 
 func ToRegister(data user.Core) RegisterRequest {
@@ -36,15 +38,20 @@ func ToRegister(data user.Core) RegisterRequest {
 	}
 }
 
-func ToEmailLogin(data user.Core) LoginEmailRequest {
-	return LoginEmailRequest{
-		Email:    data.Email,
-		Password: data.Password,
+func ToPhoneNumber(data user.Core) PhoneNumberRequest {
+	return PhoneNumberRequest{
+		PhoneNumber: data.PhoneNumber,
 	}
 }
+
+func ToEmailLogin(data user.Core) LoginEmailRequest {
+	return LoginEmailRequest{
+		Email: data.Email,
+	}
+}
+
 func ToUsernameLogin(data user.Core) LoginUsernameRequest {
 	return LoginUsernameRequest{
-		Password: data.Password,
 		Username: data.Username,
 	}
 }
