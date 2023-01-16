@@ -9,7 +9,7 @@ import (
 type Core struct {
 	ID          uint
 	Name        string `validate:"required" json:"name" form:"name"`
-	Username    string `validate:"required" json:"username" form:"username"`
+	Username    string `validate:"required,alphanum" json:"username" form:"username"`
 	Email       string `validate:"required,email" json:"email" form:"email"`
 	Photo       string
 	DateOfBith  string `json:"date_of_birth" form:"date_of_birth"`
