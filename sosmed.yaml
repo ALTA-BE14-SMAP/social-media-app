@@ -36,6 +36,8 @@ paths:
               properties:
                 name:
                   type: string
+                username:
+                  type: string
                 email:
                   type: string
                   format: email
@@ -44,6 +46,7 @@ paths:
                   format: password
             example:
               name: "Deva"
+              username: "@deva"
               email: "techmin7@gmail.com"
               password: "rahasia"
       responses:
@@ -77,6 +80,8 @@ paths:
                 email:
                   type: string
                   format: email
+                username:
+                  type: string
                 password:
                   type: string
                   format: password
@@ -89,8 +94,6 @@ paths:
                 $ref: '#/components/schemas/responseObject'
               example:
                 data:
-                  id: 1
-                  email: "techmin7@gmail.com"
                   token: "9u2npf9un24u"
                 message: "success login"
         404:
@@ -109,6 +112,34 @@ paths:
         500:
           $ref: '#/components/responses/500'
   /users:
+    get:
+      tags:
+        - "Users"
+      summary: Get all user 
+      description: menampilkan semua user
+      security:
+        - JWTAuth : []
+      responses:
+        200:
+          description: data dari semua user
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: "success"
+                  message: "success get all user id"
+                  data:
+                     -  id : 1
+                        username: "@deva"
+                        photo: "www.google.com"
+                     -  id : 2
+                        username: "@ari"
+                        photo: "www.facebook.com"
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
     patch:
       tags:
         - "Users"
@@ -124,6 +155,43 @@ paths:
               type: object
               example:
                 name: "Deva"
+                username: "@deva"
+                photo: "www.yahoo.com"
+                date_of_birth: "1995-07-10"
+                contact: "081234567"
+                email: "techmin7@gmail.com"
+                password: "rahasia"
+      responses:
+        200:
+          description: "Berhasil update"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: "succes"
+                message: "update berhasil"
+        400:
+          $ref: '#/components/responses/400'
+        500:
+          $ref: '#/components/responses/500'
+    put:
+      tags:
+        - "Users"
+      summary: Update data user
+      description: Memperbaharui data user
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: "Deva"
+                username: "@deva"
+                photo: "www.yahoo.com"
                 date_of_birth: "1995-07-10"
                 contact: "081234567"
                 email: "techmin7@gmail.com"
@@ -192,6 +260,65 @@ paths:
                   message: "posting content berhasil"
         400:
           $ref: '#/components/responses/400'
+        500:
+          $ref: '#/components/responses/500'
+    get:
+      tags:
+        - "Contents"
+      summary: Get all content from all user with Login
+      description: menampilkan semua konten dari semua user untuk fungsi setelah login
+      security:
+        - JWTAuth : []
+      responses:
+        200:
+          description: data content dari semua user
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: "success"
+                  message: "success get content by user id"
+                  data:
+                     -  id : 1
+                        content: "hiiiiii gaes kembali ketemu lagi dengan aku deva wkwkwkwkwk"
+                        image: "www.bing.com"
+                        created_at: "2023-01-07 19:23:05.527"
+                     -  id : 2
+                        content: "content 2 pergi ke malyasia"
+                        image: "www.google.com"
+                        created_at: "2022-01-07 22:22:05.527"
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+  /contents/guest:
+    get:
+      tags:
+        - "Contents"
+      summary: Get all content from all user without Login
+      description: menampilkan semua konten dari semua user untuk fungsi tanpa login
+      responses:
+        200:
+          description: data content dari semua user
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: "success"
+                  message: "success get content by user id"
+                  data:
+                     -  id : 1
+                        content: "hiiiiii gaes kembali ketemu lagi dengan aku deva wkwkwkwkwk"
+                        image: "www.bing.com"
+                        created_at: "2023-01-07 19:23:05.527"
+                     -  id : 2
+                        content: "content 2 pergi ke malyasia"
+                        image: "www.google.com"
+                        created_at: "2022-01-07 22:22:05.527"
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
   /contents/{content_id}: 
@@ -293,6 +420,7 @@ paths:
                       id : 1
                       content: "hiiiiii gaes kembali ketemu lagi dengan aku deva wkwkwkwkwk"
                       image: "www.bing.com"
+                      created_at: "2023-01-07 19:23:05.527"
         404:
           $ref: '#/components/responses/404'
         500:
@@ -371,6 +499,41 @@ paths:
         - "Comments"
       summary: Get comment to user content by content id
       description: menampilkan data comment dari content id
+      security:
+        - JWTAuth : []
+      parameters:
+        - name: content_id
+          description: "id content"
+          required: true
+          in: path
+          schema:
+            description: "id content"
+            type: integer
+            example: 1
+      responses:
+        200:
+          description: data comment dari content id
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: "success"
+                  message: "success get comment by content id"
+                  data:
+                      id : 1
+                      user_id: 1
+                      content: "hiiiiii gaes ini contoh komentar wkwkwkwkwk"
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+  /comments/{content_id}/guest:
+    get:
+      tags:
+        - "Comments"
+      summary: Get comment to user content by content id
+      description: menampilkan data comment dari content id
       parameters:
         - name: content_id
           description: "id content"
@@ -413,6 +576,8 @@ components:
           type: integer
           format: int64
         name:
+          type: string
+        username:
           type: string
         email:
           type: string
