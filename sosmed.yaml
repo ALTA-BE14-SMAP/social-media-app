@@ -123,7 +123,7 @@ paths:
         200:
           description: data dari semua user
           content:
-            application/json:
+            multipart/form-data:
               schema:
                 type: object
                 example:
@@ -140,41 +140,6 @@ paths:
           $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
-    patch:
-      tags:
-        - "Users"
-      summary: Update data user
-      description: Memperbaharui data user
-      security:
-        - JWTAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              example:
-                name: "Deva"
-                username: "@deva"
-                photo: "www.yahoo.com"
-                date_of_birth: "1995-07-10"
-                contact: "081234567"
-                email: "techmin7@gmail.com"
-                password: "rahasia"
-      responses:
-        200:
-          description: "Berhasil update"
-          content:
-            application/json:
-              schema:
-                type: object
-              example:
-                status: "succes"
-                message: "update berhasil"
-        400:
-          $ref: '#/components/responses/400'
-        500:
-          $ref: '#/components/responses/500'
     put:
       tags:
         - "Users"
@@ -185,7 +150,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               type: object
               example:
@@ -196,6 +161,7 @@ paths:
                 contact: "081234567"
                 email: "techmin7@gmail.com"
                 password: "rahasia"
+                about_me: "sebenarnya aku adalah captain amerika"
       responses:
         200:
           description: "Berhasil update"
@@ -242,7 +208,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               type: object
               example:
@@ -265,44 +231,13 @@ paths:
     get:
       tags:
         - "Contents"
-      summary: Get all content from all user with Login
-      description: menampilkan semua konten dari semua user untuk fungsi setelah login
-      security:
-        - JWTAuth : []
-      responses:
-        200:
-          description: data content dari semua user
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  status: "success"
-                  message: "success get content by user id"
-                  data:
-                     -  id : 1
-                        content: "hiiiiii gaes kembali ketemu lagi dengan aku deva wkwkwkwkwk"
-                        image: "www.bing.com"
-                        created_at: "2023-01-07 19:23:05.527"
-                     -  id : 2
-                        content: "content 2 pergi ke malyasia"
-                        image: "www.google.com"
-                        created_at: "2022-01-07 22:22:05.527"
-        404:
-          $ref: '#/components/responses/404'
-        500:
-          $ref: '#/components/responses/500'
-  /contents/guest:
-    get:
-      tags:
-        - "Contents"
       summary: Get all content from all user without Login
       description: menampilkan semua konten dari semua user untuk fungsi tanpa login
       responses:
         200:
           description: data content dari semua user
           content:
-            application/json:
+            multipart/form-data:
               schema:
                 type: object
                 example:
@@ -322,7 +257,7 @@ paths:
         500:
           $ref: '#/components/responses/500'
   /contents/{content_id}: 
-    patch:
+    put:
       tags:
         - "Contents"
       summary: edit content to user
@@ -341,7 +276,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               type: object
               example:
@@ -410,7 +345,7 @@ paths:
         200:
           description: data content dari user id
           content:
-            application/json:
+            multipart/form-data:
               schema:
                 type: object
                 example:
@@ -497,43 +432,8 @@ paths:
     get:
       tags:
         - "Comments"
-      summary: Get comment to user content by content id
-      description: menampilkan data comment dari content id
-      security:
-        - JWTAuth : []
-      parameters:
-        - name: content_id
-          description: "id content"
-          required: true
-          in: path
-          schema:
-            description: "id content"
-            type: integer
-            example: 1
-      responses:
-        200:
-          description: data comment dari content id
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  status: "success"
-                  message: "success get comment by content id"
-                  data:
-                      id : 1
-                      user_id: 1
-                      content: "hiiiiii gaes ini contoh komentar wkwkwkwkwk"
-        404:
-          $ref: '#/components/responses/404'
-        500:
-          $ref: '#/components/responses/500'
-  /comments/{content_id}/guest:
-    get:
-      tags:
-        - "Comments"
-      summary: Get comment to user content by content id
-      description: menampilkan data comment dari content id
+      summary: Get comment user by content id without login
+      description: menampilkan data comment dari content id tanpa login
       parameters:
         - name: content_id
           description: "id content"
