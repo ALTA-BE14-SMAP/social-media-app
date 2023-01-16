@@ -103,29 +103,30 @@ func (uuc *userUseCase) Update(updateData user.Core, token interface{}, file *mu
 	if id <= 0 {
 		return user.Core{}, errors.New("user tidak ditemukan harap login lagi")
 	}
+	if file != nil {
+		src, err := file.Open()
+		if err != nil {
+			return user.Core{}, errors.New("format input file tidak dapat dibuka")
+		}
+		err = helper.CheckFileSize(file.Size)
+		if err != nil {
+			return user.Core{}, errors.New("format input file size tidak diizinkan")
+		}
+		extension, err := helper.CheckFileExtension(file.Filename)
+		if err != nil {
+			return user.Core{}, errors.New("format input file type tidak diizinkan")
+		}
+		filename := "images/profile/" + strconv.FormatInt(time.Now().Unix(), 10) + "." + extension
 
-	src, err := file.Open()
-	if err != nil {
-		return user.Core{}, errors.New("format input file tidak dapat dibuka")
-	}
-	err = helper.CheckFileSize(file.Size)
-	if err != nil {
-		return user.Core{}, errors.New("format input file size tidak diizinkan")
-	}
-	extension, err := helper.CheckFileExtension(file.Filename)
-	if err != nil {
-		return user.Core{}, errors.New("format input file type tidak diizinkan")
-	}
-	filename := "images/profile/" + strconv.FormatInt(time.Now().Unix(), 10) + "." + extension
+		photo, err := helper.UploadImageToS3(filename, src)
+		if err != nil {
+			return user.Core{}, errors.New("format input file type tidak dapat diupload")
+		}
 
-	photo, err := helper.UploadImageToS3(filename, src)
-	if err != nil {
-		return user.Core{}, errors.New("format input file type tidak dapat diupload")
+		updateData.Photo = photo
+
+		defer src.Close()
 	}
-
-	updateData.Photo = photo
-
-	defer src.Close()
 
 	res, err := uuc.qry.Update(uint(id), updateData)
 	// log.Println("res update qry:", res)
