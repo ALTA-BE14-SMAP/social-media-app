@@ -195,7 +195,7 @@ A brief description of what this project does and who it's for
 | `phone_number`      | `numeric` | **Optional**.  Numeric|
 | `about_me`      | `string` | **Optional**.  |
 | `Password`      | `string` | **Optional**.  |
-| `file`      | `file` | **Optional**. file must image |
+| `image`      | `file` | **Optional**. file must image |
 
 ##### Responses
 ###### 200 OK
@@ -355,7 +355,7 @@ A brief description of what this project does and who it's for
 			"photo": "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1673870507.png"
 		}
 	],
-	"message": "berhasil lihat profil"
+	"message": "berhasil lihat get users"
 }
 ```
 
