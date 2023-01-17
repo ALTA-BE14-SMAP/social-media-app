@@ -374,3 +374,35 @@ A brief description of what this project does and who it's for
 	"message": "data tidak bisa diolah"
 }
 ```
+## User Deactive
+
+```http
+  DELETE /users 
+```
+
+##### Authorization JWT
+| Authentication | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `bearer token`      | `string` | **Required**. Your token key |
+
+##### Responses
+###### 200 OK
+```javascript
+{
+	"message": "berhasil menonaktifkan akun"
+}
+```
+###### 401 Unauthorized
+
+```javascript
+{
+	"message": "invalid or expired jwt"
+}
+```
+###### 500 Internal Server Error
+
+```javascript
+{
+	"message": "data tidak bisa diolah"
+}
+```
