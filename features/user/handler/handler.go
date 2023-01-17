@@ -100,3 +100,15 @@ func (uc *userControll) ListUsers() echo.HandlerFunc {
 		return c.JSON(http.StatusOK, helper.PrintSuccessReponse("berhasil lihat profil", ToGetUsersResArr(res)))
 	}
 }
+
+func (uc *userControll) Deactive() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		token := c.Get("user")
+
+		err := uc.srv.Deactive(token)
+		if err != nil {
+			return c.JSON(helper.PrintErrorResponse(err.Error()))
+		}
+		return c.JSON(http.StatusOK, helper.PrintSuccessReponse("berhasil menonaktifkan akun"))
+	}
+}

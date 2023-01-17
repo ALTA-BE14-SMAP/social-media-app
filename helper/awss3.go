@@ -42,12 +42,13 @@ func CheckFileExtension(filename string) (string, error) {
 }
 
 func CheckFileSize(size int64) error {
+	var fileSize int64 = 1097152
 	if size == 0 {
 		return fmt.Errorf("illegal file size")
 	}
 
-	if size > 1097152 {
-		return fmt.Errorf("file size too big")
+	if size > fileSize {
+		return fmt.Errorf("file size too big, %d MB", fileSize/1000000)
 	}
 
 	return nil

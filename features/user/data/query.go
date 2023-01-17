@@ -43,7 +43,6 @@ func (uq *userQuery) Login(newUser user.Core) (user.Core, error) {
 		res Users
 		row *sql.Row
 	)
-	log.Println(newUser)
 	if len(newUser.Email) > 0 {
 		row = uq.db.Raw(`
 		SELECT u.id, u.password 
@@ -84,10 +83,6 @@ func (uq *userQuery) Profile(id uint) (user.Core, error) {
 func (uq *userQuery) Update(id uint, updateData user.Core) (user.Core, error) {
 	cnv := CoreToData(updateData)
 	qry := uq.db.Model(&cnv).Where("id = ?", id).Updates(cnv)
-	if qry.RowsAffected <= 0 {
-		return user.Core{}, errors.New("record not found")
-	}
-
 	if err := qry.Error; err != nil {
 		log.Println("update user query error :", err.Error())
 		return user.Core{}, err
@@ -107,4 +102,20 @@ func (uq *userQuery) ListUsers() ([]user.Core, error) {
 		return []user.Core{}, errors.New("record not found")
 	}
 	return ToCoreArr(res), nil
+}
+
+func (uq *userQuery) Deactive(id uint) error {
+	user := Users{
+		Model: gorm.Model{ID: id},
+	}
+	qry := uq.db.Delete(&user)
+	if qry.RowsAffected <= 0 {
+		return errors.New("record not found")
+	}
+	err := qry.Error
+	if err != nil {
+		log.Println("delete user query error :", err.Error())
+		return err
+	}
+	return nil
 }

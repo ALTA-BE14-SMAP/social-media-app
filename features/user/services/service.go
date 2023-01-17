@@ -26,21 +26,9 @@ func New(ud user.UserData) user.UserService {
 }
 
 func (uuc *userUseCase) Register(newUser user.Core) (user.Core, error) {
-	err := uuc.vld.Struct(newUser)
+	err := helper.Validasi(helper.ToRegister(newUser))
 	if err != nil {
-		log.Println(err)
-		if _, ok := err.(*validator.InvalidValidationError); ok {
-			log.Println(err)
-		}
-		msg := ""
-		if strings.Contains(err.Error(), "required") {
-			msg = "field required wajib diisi"
-		} else if strings.Contains(err.Error(), "email") {
-			msg = "format email salah"
-		} else if strings.Contains(err.Error(), "Username") {
-			msg = "format username salah"
-		}
-		return user.Core{}, errors.New(msg)
+		return user.Core{}, err
 	}
 
 	newUser.Password = helper.HashPassword(newUser.Password)
@@ -64,13 +52,28 @@ func (uuc *userUseCase) Login(newUser user.Core) (string, user.Core, error) {
 		res user.Core
 		err error
 	)
+
+	if len(newUser.Email) > 0 {
+		err = helper.Validasi(helper.ToEmailLogin(newUser))
+		if err != nil {
+			return "", user.Core{}, err
+		}
+	} else if len(newUser.Username) > 0 {
+		err = helper.Validasi(helper.ToUsernameLogin(newUser))
+		if err != nil {
+			return "", user.Core{}, err
+		}
+	} else {
+		return "", user.Core{}, errors.New("email/username belum terdaftar")
+	}
+
 	res, err = uuc.qry.Login(newUser)
 
 	if err != nil {
 		log.Println("query login error", err.Error())
 		msg := ""
 		if strings.Contains(err.Error(), "not found") || strings.Contains(err.Error(), "no rows") {
-			msg = "email/password belum terdaftar"
+			msg = "email/username belum terdaftar"
 		} else {
 			msg = "terdapat masalah pada server"
 		}
@@ -110,6 +113,28 @@ func (uuc *userUseCase) Update(updateData user.Core, token interface{}, file *mu
 	if id <= 0 {
 		return user.Core{}, errors.New("user tidak ditemukan harap login lagi")
 	}
+
+	if len(updateData.Email) > 0 {
+		err := helper.Validasi(helper.ToEmailLogin(updateData))
+		if err != nil {
+			return user.Core{}, err
+		}
+	}
+
+	if len(updateData.Username) > 0 {
+		err := helper.Validasi(helper.ToUsernameLogin(updateData))
+		if err != nil {
+			return user.Core{}, err
+		}
+	}
+
+	if len(updateData.PhoneNumber) > 0 {
+		err := helper.Validasi(helper.ToPhoneNumber(updateData))
+		if err != nil {
+			return user.Core{}, err
+		}
+	}
+
 	if file != nil {
 		src, err := file.Open()
 		if err != nil {
@@ -117,7 +142,9 @@ func (uuc *userUseCase) Update(updateData user.Core, token interface{}, file *mu
 		}
 		err = helper.CheckFileSize(file.Size)
 		if err != nil {
-			return user.Core{}, errors.New("format input file size tidak diizinkan")
+			idx := strings.Index(err.Error(), ",")
+			msg := err.Error()
+			return user.Core{}, errors.New("format input file size tidak diizinkan, size melebihi" + msg[idx+1:])
 		}
 		extension, err := helper.CheckFileExtension(file.Filename)
 		if err != nil {
@@ -141,6 +168,8 @@ func (uuc *userUseCase) Update(updateData user.Core, token interface{}, file *mu
 		msg := ""
 		if strings.Contains(err.Error(), "not found") {
 			msg = "data tidak ditemukan"
+		} else if strings.Contains(err.Error(), "Duplicate") {
+			msg = "email/username sudah terdaftar"
 		} else {
 			msg = "terjadi kesalahan pada server"
 		}
@@ -161,4 +190,22 @@ func (uuc *userUseCase) ListUsers() ([]user.Core, error) {
 		return []user.Core{}, errors.New(msg)
 	}
 	return res, nil
+}
+
+func (uuc *userUseCase) Deactive(token interface{}) error {
+	id := helper.ExtractToken(token)
+	if id <= 0 {
+		return errors.New("user tidak ditemukan harap login lagi")
+	}
+	err := uuc.qry.Deactive(uint(id))
+	if err != nil {
+		msg := ""
+		if strings.Contains(err.Error(), "not found") {
+			msg = "data tidak ditemukan"
+		} else {
+			msg = "terjadi kesalahan pada server"
+		}
+		return errors.New(msg)
+	}
+	return nil
 }

@@ -40,6 +40,7 @@ func main() {
 	e.PUT("/users", userHdl.Update(), middleware.JWT([]byte(config.JWT_KEY)))
 	e.GET("/users", userHdl.ListUsers(), middleware.JWT([]byte(config.JWT_KEY)))
 	e.GET("/myprofile", userHdl.Profile(), middleware.JWT([]byte(config.JWT_KEY)))
+	e.DELETE("/users", userHdl.Deactive(), middleware.JWT([]byte(config.JWT_KEY)))
 
 	e.POST("/contents", contentHdl.Add(), middleware.JWT([]byte(config.JWT_KEY)))
 	e.GET("/contents", contentHdl.GetAll())
