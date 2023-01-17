@@ -43,24 +43,13 @@ func (uq *userQuery) Login(newUser user.Core) (user.Core, error) {
 		res Users
 		row *sql.Row
 	)
-	if len(newUser.Email) > 0 {
-		row = uq.db.Raw(`
+	row = uq.db.Raw(`
 		SELECT u.id, u.password 
 		FROM users u 
 		WHERE u.email = ?
+		OR u.username = ?
 		AND deleted_at IS NULL;
-		`, newUser.Email).Row()
-	} else if len(newUser.Username) > 0 {
-		row = uq.db.Raw(`
-		SELECT u.id, u.password 
-		FROM users u 
-		WHERE u.username = ?
-		AND deleted_at IS NULL;
-		`, newUser.Username).Row()
-	} else {
-		return user.Core{}, errors.New("record not found")
-	}
-
+		`, newUser.Email, newUser.Username).Row()
 	err := row.Scan(&res.ID, &res.Password)
 	if err != nil {
 		log.Println("login query error :", err.Error())

@@ -79,7 +79,6 @@ func (uuc *userUseCase) Login(newUser user.Core) (string, user.Core, error) {
 		}
 		return "", user.Core{}, errors.New(msg)
 	}
-	log.Println("ini dari db:", res.Password)
 	if err := helper.ComparePassword(res.Password, newUser.Password); err != nil {
 		return "", user.Core{}, errors.New("password tidak sesuai")
 	}

@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"log"
 	"net/http"
 	"social-media-app/features/user"
 	"social-media-app/helper"
@@ -62,11 +63,11 @@ func (uc *userControll) Update() echo.HandlerFunc {
 		//-----------
 		// Read file
 		//-----------
-		file, err := c.FormFile("file")
+		file, err := c.FormFile("image")
 		if err != nil {
 			file = nil
 		}
-
+		log.Println(file)
 		token := c.Get("user")
 		// res, err := uc.srv.Update(input, token, file)
 		_, err = uc.srv.Update(input, token, file)
@@ -97,7 +98,7 @@ func (uc *userControll) ListUsers() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(helper.PrintErrorResponse(err.Error()))
 		}
-		return c.JSON(http.StatusOK, helper.PrintSuccessReponse("berhasil lihat profil", ToGetUsersResArr(res)))
+		return c.JSON(http.StatusOK, helper.PrintSuccessReponse("berhasil lihat get users", ToGetUsersResArr(res)))
 	}
 }
 
