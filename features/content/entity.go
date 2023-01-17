@@ -1,14 +1,20 @@
 package content
 
 import (
+	"mime/multipart"
+
 	"github.com/labstack/echo/v4"
 )
 
 type CoreContent struct {
-	ID      uint
-	Content string
-	Image   string
-	Users   CoreUser
+	ID             uint
+	Content        string `validate:"required" json:"content" form:"content"`
+	Image          string `json:"image" form:"image"`
+	UserID         uint
+	JumlahKomentar string
+	Pemilik        string
+	Pembuatan      string
+	Users          CoreUser
 }
 
 type CoreUser struct {
@@ -25,10 +31,10 @@ type ContentHandler interface {
 }
 
 type ContentService interface {
-	Add(newContent CoreContent, token interface{}) (CoreContent, error)
+	Add(newContent CoreContent, token interface{}, image *multipart.FileHeader) (CoreContent, error)
 	GetAll() ([]CoreContent, error)
 	GetById(token interface{}) ([]CoreContent, error)
-	Update(token interface{}, id uint, updatedData CoreContent) (CoreContent, error)
+	Update(token interface{}, id uint, updatedData CoreContent, file *multipart.FileHeader) (CoreContent, error)
 	Delete(token interface{}, contentId uint) error
 }
 

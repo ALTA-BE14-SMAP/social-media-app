@@ -8,9 +8,13 @@ import (
 
 type Contents struct {
 	gorm.Model
-	Content string
-	Image   string
-	User    User
+	Content        string
+	Image          string
+	UserID         uint
+	JumlahKomentar string
+	Pemilik        string
+	Pembuatan      string
+	User           User
 }
 
 type User struct {
@@ -28,9 +32,13 @@ type User struct {
 
 func (data *Contents) ToCore() content.CoreContent {
 	return content.CoreContent{
-		ID:      data.ID,
-		Content: data.Content,
-		Image:   data.Image,
+		ID:             data.ID,
+		Content:        data.Content,
+		Image:          data.Image,
+		UserID:         data.User.ID,
+		JumlahKomentar: data.JumlahKomentar,
+		Pemilik:        data.User.Name,
+		Pembuatan:      data.CreatedAt.String(),
 		Users: content.CoreUser{
 			ID:   data.User.ID,
 			Name: data.User.Name,
@@ -50,6 +58,7 @@ func CoreToData(data content.CoreContent) Contents {
 		Model:   gorm.Model{ID: data.ID},
 		Content: data.Content,
 		Image:   data.Image,
+		UserID:  data.Users.ID,
 	}
 }
 

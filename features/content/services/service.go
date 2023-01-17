@@ -2,10 +2,14 @@ package services
 
 import (
 	"errors"
+	"fmt"
 	"log"
+	"mime/multipart"
 	"social-media-app/features/content"
 	"social-media-app/helper"
+	"strconv"
 	"strings"
+	"time"
 
 	"github.com/go-playground/validator/v10"
 )
@@ -22,8 +26,33 @@ func New2(cd content.ContentData) content.ContentService {
 	}
 }
 
-func (cuu *contentUseCase) Add(newContent content.CoreContent, token interface{}) (content.CoreContent, error) {
+func (cuu *contentUseCase) Add(newContent content.CoreContent, token interface{}, file *multipart.FileHeader) (content.CoreContent, error) {
 	id := helper.ExtractToken(token)
+	fmt.Println("======service=====")
+	if file != nil {
+		src, err := file.Open()
+		if err != nil {
+			return content.CoreContent{}, errors.New("format input file tidak dapat dibuka")
+		}
+		err = helper.CheckFileSize(file.Size)
+		if err != nil {
+			return content.CoreContent{}, errors.New("format input file size tidak diizinkan")
+		}
+		extension, err := helper.CheckFileExtension(file.Filename)
+		if err != nil {
+			return content.CoreContent{}, errors.New("format input file type tidak diizinkan")
+		}
+		filename := "images/profile/" + strconv.FormatInt(time.Now().Unix(), 10) + "." + extension
+
+		photo, err := helper.UploadImageToS3(filename, src)
+		if err != nil {
+			return content.CoreContent{}, errors.New("format input file type tidak dapat diupload")
+		}
+
+		newContent.Image = photo
+
+		defer src.Close()
+	}
 
 	err := cuu.vld.Struct(newContent)
 	if err != nil {
@@ -79,8 +108,32 @@ func (cuu *contentUseCase) GetById(token interface{}) ([]content.CoreContent, er
 	return res, nil
 }
 
-func (cuu *contentUseCase) Update(token interface{}, id uint, tmp content.CoreContent) (content.CoreContent, error) {
+func (cuu *contentUseCase) Update(token interface{}, id uint, tmp content.CoreContent, file *multipart.FileHeader) (content.CoreContent, error) {
 	id2 := helper.ExtractToken(token)
+	if file != nil {
+		src, err := file.Open()
+		if err != nil {
+			return content.CoreContent{}, errors.New("format input file tidak dapat dibuka")
+		}
+		err = helper.CheckFileSize(file.Size)
+		if err != nil {
+			return content.CoreContent{}, errors.New("format input file size tidak diizinkan")
+		}
+		extension, err := helper.CheckFileExtension(file.Filename)
+		if err != nil {
+			return content.CoreContent{}, errors.New("format input file type tidak diizinkan")
+		}
+		filename := "images/profile/" + strconv.FormatInt(time.Now().Unix(), 10) + "." + extension
+
+		photo, err := helper.UploadImageToS3(filename, src)
+		if err != nil {
+			return content.CoreContent{}, errors.New("format input file type tidak dapat diupload")
+		}
+
+		tmp.Image = photo
+
+		defer src.Close()
+	}
 	res, err := cuu.qry.Update(uint(id2), id, tmp)
 	if err != nil {
 		msg := ""

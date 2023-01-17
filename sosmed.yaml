@@ -123,12 +123,10 @@ paths:
         200:
           description: data dari semua user
           content:
-            multipart/form-data:
+            application/json:
               schema:
                 type: object
                 example:
-                  status: "success"
-                  message: "success get all user id"
                   data:
                      -  id : 1
                         username: "@deva"
@@ -136,6 +134,7 @@ paths:
                      -  id : 2
                         username: "@ari"
                         photo: "www.facebook.com"
+                  message: "success get all user id"
         404:
           $ref: '#/components/responses/404'
         500:
@@ -170,7 +169,6 @@ paths:
               schema:
                 type: object
               example:
-                status: "succes"
                 message: "update berhasil"
         400:
           $ref: '#/components/responses/400'
@@ -191,7 +189,6 @@ paths:
               schema:
                 type: object
                 example:
-                  status: "success"
                   message: "Delete user berhasil"
         400:
           $ref: '#/components/responses/400'
@@ -222,7 +219,6 @@ paths:
               schema:
                 type: object
                 example:
-                  status: "success"
                   message: "posting content berhasil"
         400:
           $ref: '#/components/responses/400'
@@ -237,12 +233,10 @@ paths:
         200:
           description: data content dari semua user
           content:
-            multipart/form-data:
+            application/json:
               schema:
                 type: object
                 example:
-                  status: "success"
-                  message: "success get content by user id"
                   data:
                      -  id : 1
                         content: "hiiiiii gaes kembali ketemu lagi dengan aku deva wkwkwkwkwk"
@@ -252,6 +246,7 @@ paths:
                         content: "content 2 pergi ke malyasia"
                         image: "www.google.com"
                         created_at: "2022-01-07 22:22:05.527"
+                  message: "success get content by user id"
         404:
           $ref: '#/components/responses/404'
         500:
@@ -290,7 +285,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/responseObject'
               example:
-                status: "succes"
                 message: "update berhasil"
         400:
           $ref: '#/components/responses/400'
@@ -321,7 +315,6 @@ paths:
               schema:
                 type: object
                 example:
-                  status: "success"
                   message: "Delete content berhasil"
         400:
           $ref: '#/components/responses/400'
@@ -345,17 +338,16 @@ paths:
         200:
           description: data content dari user id
           content:
-            multipart/form-data:
+            application/json:
               schema:
                 type: object
                 example:
-                  status: "success"
-                  message: "success get content by user id"
                   data:
                       id : 1
                       content: "hiiiiii gaes kembali ketemu lagi dengan aku deva wkwkwkwkwk"
                       image: "www.bing.com"
                       created_at: "2023-01-07 19:23:05.527"
+                  message: "success get content by user id"
         404:
           $ref: '#/components/responses/404'
         500:
@@ -393,7 +385,6 @@ paths:
               schema:
                 type: object
                 example:
-                  status: "success"
                   message: "Comments content berhasil"
         400:
           $ref: '#/components/responses/400'
@@ -423,7 +414,6 @@ paths:
               schema:
                 type: object
                 example:
-                  status: "success"
                   message: "Delete content berhasil"
         400:
           $ref: '#/components/responses/400'
@@ -451,12 +441,11 @@ paths:
               schema:
                 type: object
                 example:
-                  status: "success"
-                  message: "success get comment by content id"
                   data:
                       id : 1
                       user_id: 1
                       content: "hiiiiii gaes ini contoh komentar wkwkwkwkwk"
+                  message: "success get comment by content id"
         404:
           $ref: '#/components/responses/404'
         500:
@@ -550,7 +539,6 @@ components:
               message:
                 type: string
           example:
-            status: "failed"
             message: "data not found"
     500:
       description: "Kesalahan dari server"

@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"social-media-app/features/content"
@@ -28,7 +29,15 @@ func (cc *contentControll) Add() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, "format inputan salah")
 		}
 		newContent := ToCore(input)
-		_, err := cc.srv.Add(*newContent, token)
+		//-----------
+		// Read file
+		//-----------
+		file, err := c.FormFile("image")
+		if err != nil {
+			file = nil
+		}
+		fmt.Println("====handler======")
+		_, err = cc.srv.Add(*newContent, token, file)
 		if err != nil {
 			return c.JSON(helper.PrintErrorResponse(err.Error()))
 		}
@@ -67,11 +76,18 @@ func (cc *contentControll) Update() echo.HandlerFunc {
 			return c.JSON(helper.PrintErrorResponse("Error binding data"))
 		}
 		token := c.Get("user")
-		tmp := ContentResponse{}
+		tmp := RegisterReq{}
 		if err := c.Bind(&tmp); err != nil {
 			return c.JSON(http.StatusBadRequest, "format input salah")
 		}
-		_, err2 := cc.srv.Update(token, uint(tes), *ToCore(tmp))
+		//-----------
+		// Read file
+		//-----------
+		file, err := c.FormFile("image")
+		if err != nil {
+			file = nil
+		}
+		_, err2 := cc.srv.Update(token, uint(tes), *ToCore(tmp), file)
 		if err2 != nil {
 			return c.JSON(helper.PrintErrorResponse(err2.Error()))
 		}
