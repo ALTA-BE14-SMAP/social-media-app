@@ -13,7 +13,6 @@ type Contents struct {
 	UserID         uint
 	JumlahKomentar string
 	Pemilik        string
-	Pembuatan      string
 	User           User
 }
 
