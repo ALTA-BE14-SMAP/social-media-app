@@ -5,7 +5,7 @@ import (
 )
 
 type RegisterReq struct {
-	Content string `json:"content" form:"content"`
+	Content string `validate:"required" json:"content" form:"content"`
 	Image   string `json:"image" form:"image"`
 }
 

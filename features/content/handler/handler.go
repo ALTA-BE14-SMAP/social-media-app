@@ -26,7 +26,7 @@ func (cc *contentControll) Add() echo.HandlerFunc {
 		token := c.Get("user")
 		input := RegisterReq{}
 		if err := c.Bind(&input); err != nil {
-			return c.JSON(http.StatusBadRequest, "format inputan salah")
+			return c.JSON(http.StatusBadRequest, "kesalahan input")
 		}
 		newContent := ToCore(input)
 		//-----------
@@ -41,7 +41,7 @@ func (cc *contentControll) Add() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(helper.PrintErrorResponse(err.Error()))
 		}
-		return c.JSON(http.StatusCreated, helper.PrintSuccessReponse("success add data"))
+		return c.JSON(http.StatusCreated, helper.PrintSuccessReponse("posting content berhasil"))
 	}
 }
 
@@ -58,9 +58,12 @@ func (cc *contentControll) GetAll() echo.HandlerFunc {
 
 func (cc *contentControll) GetById() echo.HandlerFunc {
 	return func(c echo.Context) error {
-
+		tes, errBind := strconv.Atoi(c.Param("id"))
+		if errBind != nil {
+			return c.JSON(helper.PrintErrorResponse("Error binding data"))
+		}
 		token := c.Get("user")
-		res, err2 := cc.srv.GetById(token)
+		res, err2 := cc.srv.GetById(token, uint(tes))
 		if err2 != nil {
 			return c.JSON(helper.PrintErrorResponse(err2.Error()))
 		}
@@ -78,7 +81,7 @@ func (cc *contentControll) Update() echo.HandlerFunc {
 		token := c.Get("user")
 		tmp := RegisterReq{}
 		if err := c.Bind(&tmp); err != nil {
-			return c.JSON(http.StatusBadRequest, "format input salah")
+			return c.JSON(http.StatusBadRequest, "kesalahan input")
 		}
 		//-----------
 		// Read file
@@ -99,7 +102,7 @@ func (cc *contentControll) Delete() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		tes, errBind := strconv.Atoi(c.Param("id"))
 		if errBind != nil {
-			return c.JSON(helper.PrintErrorResponse("Error binding data"))
+			return c.JSON(helper.PrintErrorResponse("Kesalahan input"))
 		}
 		token := c.Get("user")
 		err2 := cc.srv.Delete(token, uint(tes))
