@@ -15,7 +15,7 @@ type contentControll struct {
 	srv content.ContentService
 }
 
-func New2(srv content.ContentService) content.ContentHandler {
+func New(srv content.ContentService) content.ContentHandler {
 	return &contentControll{
 		srv: srv,
 	}

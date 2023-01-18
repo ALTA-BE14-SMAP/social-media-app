@@ -2,7 +2,6 @@ package content
 
 import (
 	"mime/multipart"
-	"time"
 
 	"github.com/labstack/echo/v4"
 )
@@ -12,7 +11,6 @@ type CoreContent struct {
 	Content        string `validate:"required" json:"content" form:"content"`
 	Image          string `json:"image" form:"image"`
 	UserID         uint
-	CreatedAt      time.Time
 	JumlahKomentar string
 	Pemilik        string
 	Pembuatan      string
