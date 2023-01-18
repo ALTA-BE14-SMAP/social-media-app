@@ -63,23 +63,49 @@ func (ch *commentHandle) ListComments() echo.HandlerFunc {
 
 func (ch *commentHandle) Delete() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		id := c.Param("idPost")
-		postID, err := strconv.Atoi(id)
-		if err != nil {
-			log.Println("trouble convert param id post:  ", err.Error())
-			return c.JSON(helper.PrintErrorResponse(err.Error()))
-		}
-		id = c.Param("idComment")
+		// id := c.Param("idPost")
+		// postID, err := strconv.Atoi(id)
+		// if err != nil {
+		// 	log.Println("trouble convert param id post:  ", err.Error())
+		// 	return c.JSON(helper.PrintErrorResponse(err.Error()))
+		// }
+		id := c.Param("idComment")
 		commentID, err := strconv.Atoi(id)
 		if err != nil {
 			log.Println("trouble convert param id comment:  ", err.Error())
 			return c.JSON(helper.PrintErrorResponse(err.Error()))
 		}
 		token := c.Get("user")
-		err = ch.srv.Delete(uint(commentID), uint(postID), token)
+		err = ch.srv.Delete(uint(commentID), token)
+		// err = ch.srv.Delete(uint(commentID), uint(postID), token)
 		if err != nil {
 			return c.JSON(helper.PrintErrorResponse(err.Error()))
 		}
 		return c.JSON(http.StatusOK, helper.PrintSuccessReponse("Berhasil delete comment"))
+	}
+}
+
+func (ch *commentHandle) Update() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		input := AddCommentRequest{}
+		if err := c.Bind(&input); err != nil {
+			return c.JSON(http.StatusBadRequest, "format inputan salah")
+		}
+		id := c.Param("idComment")
+		commentID, err := strconv.Atoi(id)
+		if err != nil {
+			log.Println("trouble convert param id comment:  ", err.Error())
+			return c.JSON(helper.PrintErrorResponse(err.Error()))
+		}
+		token := c.Get("user")
+		_, err = ch.srv.Update(*ToCore(input), uint(commentID), token)
+		// res, err := ch.srv.Update(*ToCore(input), uint(commentID), token)
+		if err != nil {
+			return c.JSON(helper.PrintErrorResponse(err.Error()))
+		}
+
+		return c.JSON(http.StatusOK, helper.PrintSuccessReponse("berhasil update comment"))
+		// return c.JSON(http.StatusOK, helper.PrintSuccessReponse("berhasil update data", ToResponse(res)))
+
 	}
 }

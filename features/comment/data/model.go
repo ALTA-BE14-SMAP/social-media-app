@@ -37,9 +37,6 @@ func ToCore(data Comment) comment.Core {
 
 func CoreToData(data comment.Core) Comment {
 	return Comment{
-		Model: gorm.Model{
-			ID: data.ID,
-		},
 		Content:    data.Content,
 		Komentator: data.Komentator,
 	}

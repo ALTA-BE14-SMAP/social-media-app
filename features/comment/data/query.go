@@ -18,10 +18,10 @@ func New(db *gorm.DB) comment.CommentData {
 	}
 }
 
-func (cq *CommentQuery) Add(newComment comment.Core, PostID uint, UserId uint) (comment.Core, error) {
+func (cq *CommentQuery) Add(newComment comment.Core, PostID uint, userID uint) (comment.Core, error) {
 	cnv := CoreToData(newComment)
 	cnv.ContentID = PostID
-	cnv.UserID = UserId
+	cnv.UserID = userID
 	err := cq.db.Create(&cnv).Error
 	if err != nil {
 		log.Println("add comment query error :", err.Error())
@@ -51,11 +51,11 @@ func (cq *CommentQuery) ListComments(PostID uint) ([]comment.Core, error) {
 	return ToCoreArr(res), nil
 }
 
-func (cq *CommentQuery) Delete(commentID uint, PostID uint, userID uint) error {
+func (cq *CommentQuery) Delete(commentID uint, userID uint) error {
 	comment := Comment{
 		Model: gorm.Model{ID: commentID},
 	}
-	qry := cq.db.Where("user_id = ? AND content_id = ?", userID, PostID).Delete(&comment)
+	qry := cq.db.Where("user_id = ?", userID).Delete(&comment)
 	if qry.RowsAffected <= 0 {
 		log.Println("delete comment query error : data not found")
 		return errors.New("not found")
@@ -66,4 +66,23 @@ func (cq *CommentQuery) Delete(commentID uint, PostID uint, userID uint) error {
 		return err
 	}
 	return nil
+}
+
+func (cq *CommentQuery) Update(newComment comment.Core, commentID uint, userID uint) (comment.Core, error) {
+	cnv := CoreToData(newComment)
+	cnv.ID = commentID
+	cnv.UserID = userID
+	qry := cq.db.Model(&cnv).Where("user_id = ?", userID).Updates(cnv)
+	log.Println(qry.RowsAffected)
+	if qry.RowsAffected <= 0 {
+		log.Println("update comment query error : data not found")
+		return comment.Core{}, errors.New("data not found")
+	}
+
+	if err := qry.Error; err != nil {
+		log.Println("update comment query error :", err.Error())
+		return comment.Core{}, err
+	}
+	// cnv.Pemilik = user.Nama
+	return ToCore(cnv), nil
 }

@@ -57,8 +57,10 @@ func main() {
 	e.DELETE("/contents/:id", contentHdl.Delete(), middleware.JWT([]byte(config.JWT_KEY)))
 
 	e.POST("/comments/:idPost", commentHdl.Add(), middleware.JWT([]byte(config.JWT_KEY)))
+	e.PUT("/comments/:idComment", commentHdl.Update(), middleware.JWT([]byte(config.JWT_KEY)))
 	e.GET("/comments/:idPost", commentHdl.ListComments())
-	e.DELETE("/comments/:idPost/:idComment", commentHdl.Delete(), middleware.JWT([]byte(config.JWT_KEY)))
+	e.DELETE("/comments/:idComment", commentHdl.Delete(), middleware.JWT([]byte(config.JWT_KEY)))
+	// e.DELETE("/comments/:idPost/:idComment", commentHdl.Delete(), middleware.JWT([]byte(config.JWT_KEY)))
 
 	if err := e.Start(":8000"); err != nil {
 		log.Println(err.Error())

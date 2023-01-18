@@ -699,10 +699,11 @@ A brief description of what this project does and who it's for
 	"message": "data tidak bisa diolah"
 }
 ```
-## Comment Delete
+
+## Comment Update
 
 ```http
-  DELETE /comments/{idPost}/{idComment}
+  PUT /comments/{idComment}
 ```
 
 ##### Authorization JWT
@@ -713,7 +714,70 @@ A brief description of what this project does and who it's for
 ##### Parameters Path
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `{idPost}`      | `numuric` | **Required**. Your id post/content |
+| `{idComment}`      | `numuric` | **Required**. Your id comment |
+
+##### Form/JSON
+| Field | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `text` | `string` | **Required**. text for your comment|
+
+##### Responses
+###### 200 Created
+
+```javascript
+{
+	"message": "berhasil update comment"
+}
+```
+
+
+###### 400 Bad Request
+
+```javascript
+{
+	"message": "field required wajib diisi"
+}
+```
+
+###### 401 Unauthorized
+
+```javascript
+{
+	"message": "invalid or expired jwt"
+}
+```
+
+###### 404 Not Found
+
+```javascript
+{
+	"message": "comment tidak ditemukan"
+}
+```
+
+###### 500 Internal Server Error
+
+```javascript
+{
+	"message": "data tidak bisa diolah"
+}
+```
+
+
+## Comment Delete
+
+```http
+  DELETE /comments/{idComment}
+```
+
+##### Authorization JWT
+| Authentication | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `bearer token`      | `string` | **Required**. Your token key |
+
+##### Parameters Path
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
 | `{idComment}`      | `numuric` | **Required**. Your id comment |
 
 ##### Responses
@@ -728,6 +792,13 @@ A brief description of what this project does and who it's for
 ```javascript
 {
 	"message": "invalid or expired jwt"
+}
+```
+###### 404 Not Found
+
+```javascript
+{
+	"message": "comment tidak ditemukan"
 }
 ```
 ###### 500 Internal Server Error
