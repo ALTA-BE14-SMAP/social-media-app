@@ -13,7 +13,7 @@ type contentQuery struct {
 	db *gorm.DB
 }
 
-func New2(db *gorm.DB) content.ContentData {
+func New(db *gorm.DB) content.ContentData {
 	return &contentQuery{
 		db: db,
 	}

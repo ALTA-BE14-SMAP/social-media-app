@@ -19,7 +19,7 @@ type contentUseCase struct {
 	vld *validator.Validate
 }
 
-func New2(cd content.ContentData) content.ContentService {
+func New(cd content.ContentData) content.ContentService {
 	return &contentUseCase{
 		qry: cd,
 		vld: validator.New(),

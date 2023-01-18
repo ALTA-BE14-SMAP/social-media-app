@@ -25,9 +25,9 @@ func main() {
 	userSrv := services.New(userData)
 	userHdl := handler.New(userSrv)
 
-	contentData := dt.New2(db)
-	contentSrv := sc.New2(contentData)
-	contentHdl := hd.New2(contentSrv)
+	contentData := dt.New(db)
+	contentSrv := sc.New(contentData)
+	contentHdl := hd.New(contentSrv)
 
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.CORS())
