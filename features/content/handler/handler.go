@@ -60,7 +60,7 @@ func (cc *contentControll) GetById() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		tes, errBind := strconv.Atoi(c.Param("id"))
 		if errBind != nil {
-			return c.JSON(helper.PrintErrorResponse("Error binding data"))
+			return c.JSON(helper.PrintErrorResponse("Data not found"))
 		}
 		token := c.Get("user")
 		res, err2 := cc.srv.GetById(token, uint(tes))
