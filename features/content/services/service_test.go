@@ -30,7 +30,7 @@ func TestAdd(t *testing.T) {
 		pToken := token.(*jwt.Token)
 		pToken.Valid = true
 
-		x := multipart.FileHeader{Filename: "patrick"} //data foto
+		x := multipart.FileHeader{Filename: "patrick.jpg"} //data foto
 
 		repo.On("Add", inputData).Return(resData, nil)
 		srv := New2(repo)
