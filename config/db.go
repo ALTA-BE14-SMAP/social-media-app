@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"log"
+	comments "social-media-app/features/comment/data"
 	contents "social-media-app/features/content/data"
 	users "social-media-app/features/user/data"
 
@@ -25,4 +26,5 @@ func InitDB(ac AppConfig) *gorm.DB {
 func Migrate(db *gorm.DB) {
 	db.AutoMigrate(users.Users{})
 	db.AutoMigrate(contents.Contents{})
+	db.AutoMigrate(comments.Comment{})
 }
