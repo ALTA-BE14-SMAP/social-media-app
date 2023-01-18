@@ -9,6 +9,7 @@ A brief description of what this project does and who it's for
 ## IP Server : 54.254.27.167
 
 
+
 #### Status Codes
 
 | Status Code | Description |
@@ -20,6 +21,7 @@ A brief description of what this project does and who it's for
 | 404 | `NOT FOUND` |
 | 409 | `CONFLICT` |
 | 500 | `INTERNAL SERVER ERROR` |
+
 
 ### User Register
 
@@ -92,6 +94,7 @@ A brief description of what this project does and who it's for
 	"message": "data tidak bisa diolah"
 }
 ```
+
 ### User Login
 
 ```http
@@ -171,6 +174,7 @@ A brief description of what this project does and who it's for
 	"message": "data tidak bisa diolah"
 }
 ```
+
 
 
 
@@ -406,6 +410,7 @@ A brief description of what this project does and who it's for
 	"message": "data tidak bisa diolah"
 }
 ```
+
 ### Content Add
 
 ```http
@@ -449,6 +454,7 @@ A brief description of what this project does and who it's for
 	"message": "data tidak bisa diolah"
 }
 ```
+
 ### Content GetAll
 ```http
  GET /contents
@@ -489,6 +495,7 @@ A brief description of what this project does and who it's for
 	"message": "data tidak bisa diolah"
 }
 ```
+
 ### Content Update
 ```http
   PUT /contents
@@ -547,6 +554,7 @@ A brief description of what this project does and who it's for
 	"message": "data tidak bisa diolah"
 }
 ```
+
 ### Content Delete
 ```http
   DELETE /contents
@@ -576,6 +584,154 @@ A brief description of what this project does and who it's for
 }
 ```
 ###### 500 Internal Server Error
+```javascript
+{
+	"message": "data tidak bisa diolah"
+}
+```
+
+## Comment Add
+
+```http
+  POST /comments/{idPost}
+```
+
+##### Authorization JWT
+| Authentication | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `bearer token`      | `string` | **Required**. Your token key |
+
+##### Parameters Path
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `{idPost}`      | `numuric` | **Required**. Your id post/content |
+
+##### Form/JSON
+| Field | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `text` | `string` | **Required**. text for your comment|
+
+##### Responses
+###### 201 Created
+
+```javascript
+{
+	"message": "success add comment"
+}
+```
+
+
+###### 400 Bad Request
+
+```javascript
+{
+	"message": "field required wajib diisi"
+}
+```
+
+###### 401 Unauthorized
+
+```javascript
+{
+	"message": "invalid or expired jwt"
+}
+```
+
+###### 500 Internal Server Error
+
+```javascript
+{
+	"message": "data tidak bisa diolah"
+}
+```
+
+
+## List Comments  (by id post/content)
+
+```http
+  GET /comments/{idPost}
+```
+
+##### Parameters Path
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `{idPost}`      | `numuric` | **Required**. Your id post/content |
+
+##### Responses
+###### 200 OK
+
+```javascript
+{
+	"data": [
+		{
+			"id": 1,
+			"text": "Happy Second Birthday nak kicik❤️Terimakasih sudah menjadikanku ibu, selalu setia jadi teman ibu👶",
+			"created_at": "2023-01-18 18:26:30.472 +0700 WIB",
+			"commentator": "Budi Sukses"
+		},
+		{
+			"id": 2,
+			"text": "You can add any url params you want there and it will show you the url preview above it.",
+			"created_at": "2023-01-18 18:30:55.665 +0700 WIB",
+			"commentator": "Budi Sukses"
+		},
+		{
+			"id": 3,
+			"text": "Sy jg pengen punya app kayak gini",
+			"created_at": "2023-01-18 18:33:24.388 +0700 WIB",
+			"commentator": "Budi Sukses"
+		},
+		{
+			"id": 4,
+			"text": "Tutorial yg paling banyak dicari tentang golang menurut saya adalah cara Deploy ke production di hosting yg murah untuk produktion,",
+			"created_at": "2023-01-18 18:51:15.698 +0700 WIB",
+			"commentator": "Budi Sukses"
+		}
+	],
+	"message": "Berhasil melihat list comments"
+}
+```
+
+###### 500 Internal Server Error
+
+```javascript
+{
+	"message": "data tidak bisa diolah"
+}
+```
+## Comment Delete
+
+```http
+  DELETE /comments/{idPost}/{idComment}
+```
+
+##### Authorization JWT
+| Authentication | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `bearer token`      | `string` | **Required**. Your token key |
+
+##### Parameters Path
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `{idPost}`      | `numuric` | **Required**. Your id post/content |
+| `{idComment}`      | `numuric` | **Required**. Your id comment |
+
+##### Responses
+###### 200 OK
+```javascript
+{
+	"message": "Berhasil delete comment"
+}
+```
+###### 401 Unauthorized
+
+```javascript
+{
+	"message": "invalid or expired jwt"
+}
+```
+###### 500 Internal Server Error
+
 ```javascript
 {
 	"message": "data tidak bisa diolah"
