@@ -44,7 +44,7 @@ func main() {
 
 	e.POST("/contents", contentHdl.Add(), middleware.JWT([]byte(config.JWT_KEY)))
 	e.GET("/contents", contentHdl.GetAll())
-	e.GET("/contents", contentHdl.GetById(), middleware.JWT([]byte(config.JWT_KEY)))
+	e.GET("/contents/:id", contentHdl.GetById(), middleware.JWT([]byte(config.JWT_KEY)))
 	e.PUT("/contents/:id", contentHdl.Update(), middleware.JWT([]byte(config.JWT_KEY)))
 	e.DELETE("/contents/:id", contentHdl.Delete(), middleware.JWT([]byte(config.JWT_KEY)))
 	if err := e.Start(":8000"); err != nil {
