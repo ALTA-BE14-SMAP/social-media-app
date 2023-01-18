@@ -58,12 +58,12 @@ func (cuc *commentUseCase) ListComments(PostID uint) ([]comment.Core, error) {
 	return res, nil
 }
 
-func (cuc *commentUseCase) Delete(commentID uint, PostID uint, token interface{}) error {
+func (cuc *commentUseCase) Delete(commentID uint, token interface{}) error {
 	userID := helper.ExtractToken(token)
 	if userID <= 0 {
 		return errors.New("user tidak ditemukan")
 	}
-	err := cuc.qry.Delete(commentID, PostID, uint(userID))
+	err := cuc.qry.Delete(commentID, uint(userID))
 	if err != nil {
 		msg := ""
 		if strings.Contains(err.Error(), "not found") {
@@ -74,4 +74,28 @@ func (cuc *commentUseCase) Delete(commentID uint, PostID uint, token interface{}
 		return errors.New(msg)
 	}
 	return nil
+}
+func (cuc *commentUseCase) Update(newComment comment.Core, commentID uint, token interface{}) (comment.Core, error) {
+	err := helper.Validasi(helper.ToComment(newComment))
+	if err != nil {
+		return comment.Core{}, err
+	}
+
+	userID := helper.ExtractToken(token)
+	if userID <= 0 {
+		return comment.Core{}, errors.New("user tidak ditemukan")
+	}
+
+	res, err := cuc.qry.Update(newComment, commentID, uint(userID))
+	if err != nil {
+		msg := ""
+		if strings.Contains(err.Error(), "not found") {
+			msg = "comment tidak ditemukan"
+		} else {
+			msg = "terjadi kesalahan pada server"
+		}
+		return comment.Core{}, errors.New(msg)
+	}
+
+	return res, nil
 }
