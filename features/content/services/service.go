@@ -19,7 +19,7 @@ type contentUseCase struct {
 	vld *validator.Validate
 }
 
-func New2(cd content.ContentData) content.ContentService {
+func New(cd content.ContentData) content.ContentService {
 	return &contentUseCase{
 		qry: cd,
 		vld: validator.New(),
@@ -60,7 +60,7 @@ func (cuu *contentUseCase) Add(newContent content.CoreContent, token interface{}
 		if _, ok := err.(*validator.InvalidValidationError); ok {
 			log.Println(err)
 		}
-		return content.CoreContent{}, errors.New("format input user tidak sesuai dengan arahan")
+		return content.CoreContent{}, errors.New("field required wajib diisi")
 	}
 	res, err := cuu.qry.Add(newContent, uint(id))
 
@@ -69,7 +69,7 @@ func (cuu *contentUseCase) Add(newContent content.CoreContent, token interface{}
 		if strings.Contains(err.Error(), "not found") {
 			msg = "id tidak ditemukan"
 		} else {
-			msg = "terjadi kesalahan pada server"
+			msg = "data tidak bisa diolah"
 		}
 		return content.CoreContent{}, errors.New(msg)
 	}
@@ -85,22 +85,22 @@ func (cuu *contentUseCase) GetAll() ([]content.CoreContent, error) {
 		if strings.Contains(err.Error(), "not found") {
 			msg = "content tidak ditemukan"
 		} else {
-			msg = "terjadi kesalahan pada server"
+			msg = "data tidak bisa diolah"
 		}
 		return []content.CoreContent{}, errors.New(msg)
 	}
 	return res, nil
 }
 
-func (cuu *contentUseCase) GetById(token interface{}) ([]content.CoreContent, error) {
+func (cuu *contentUseCase) GetById(token interface{}, tes uint) ([]content.CoreContent, error) {
 	id2 := helper.ExtractToken(token)
-	res, err := cuu.qry.GetById(uint(id2))
+	res, err := cuu.qry.GetById(uint(id2), tes)
 	if err != nil {
 		msg := ""
 		if strings.Contains(err.Error(), "not found") {
 			msg = "content tidak ditemukan"
 		} else {
-			msg = "terdapat masalah pada server"
+			msg = "data tidak bisa diolah"
 		}
 		return []content.CoreContent{}, errors.New(msg)
 	}
@@ -140,7 +140,7 @@ func (cuu *contentUseCase) Update(token interface{}, id uint, tmp content.CoreCo
 		if strings.Contains(err.Error(), "not found") {
 			msg = "data tidak ditemukan"
 		} else {
-			msg = "terdapat masalah pada server"
+			msg = "data tidak bisa diolah"
 		}
 		return content.CoreContent{}, errors.New(msg)
 	}
@@ -156,7 +156,7 @@ func (cuu *contentUseCase) Delete(token interface{}, contentId uint) error {
 		if strings.Contains(err.Error(), "not found") {
 			msg = "data tidak ditemukan"
 		} else {
-			msg = "terdapat masalah pada server"
+			msg = "data tidak bisa diolah"
 		}
 		return errors.New(msg)
 	}

@@ -13,7 +13,7 @@ type contentQuery struct {
 	db *gorm.DB
 }
 
-func New2(db *gorm.DB) content.ContentData {
+func New(db *gorm.DB) content.ContentData {
 	return &contentQuery{
 		db: db,
 	}
@@ -31,7 +31,7 @@ func (cq *contentQuery) Add(newBook content.CoreContent, id uint) (content.CoreC
 		if strings.Contains(err.Error(), "Duplicate") {
 			msg = "data is duplicated"
 		} else {
-			msg = "server error"
+			msg = "data tidak bisa diolah"
 		}
 		return content.CoreContent{}, errors.New(msg)
 	}
@@ -52,10 +52,10 @@ func (cq *contentQuery) GetAll() ([]content.CoreContent, error) {
 	return Y, nil
 }
 
-func (cq *contentQuery) GetById(id2 uint) ([]content.CoreContent, error) {
+func (cq *contentQuery) GetById(id2 uint, tes uint) ([]content.CoreContent, error) {
 	var sementara []Contents
 
-	if err := cq.db.Preload("User").Where("user_id = ?", id2).Find(&sementara).Error; err != nil {
+	if err := cq.db.Preload("User").Where("user_id = ?", tes).Find(&sementara).Error; err != nil {
 		log.Println("Get By ID query error", err.Error())
 		return ToCore2(sementara), err
 	}

@@ -1,22 +1,26 @@
 package handler
 
-import "social-media-app/features/content"
+import (
+	"social-media-app/features/content"
+)
 
 type ContentResponse struct {
-	ID      uint   `json:"id"`
-	Content string `json:"content"`
-	Image   string `json:"image"`
-	UserID  uint   `json:"userid"`
-	Name    string `json:"name"`
+	ID        uint   `json:"id"`
+	Content   string `json:"content"`
+	Image     string `json:"image"`
+	UserID    uint   `json:"userid"`
+	Name      string `json:"name"`
+	Pembuatan string `json:"created_at"`
 }
 
 func ToResponse(data content.CoreContent) ContentResponse {
 	return ContentResponse{
-		ID:      data.ID,
-		Content: data.Content,
-		Image:   data.Image,
-		UserID:  data.Users.ID,
-		Name:    data.Users.Name,
+		ID:        data.ID,
+		Content:   data.Content,
+		Image:     data.Image,
+		UserID:    data.Users.ID,
+		Name:      data.Users.Name,
+		Pembuatan: data.Pembuatan,
 	}
 }
 

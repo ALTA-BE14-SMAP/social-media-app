@@ -29,9 +29,9 @@ func main() {
 	userSrv := services.New(userData)
 	userHdl := handler.New(userSrv)
 
-	contentData := dt.New2(db)
-	contentSrv := sc.New2(contentData)
-	contentHdl := hd.New2(contentSrv)
+	contentData := dt.New(db)
+	contentSrv := sc.New(contentData)
+	contentHdl := hd.New(contentSrv)
 
 	commentData := commentData.New(db)
 	commentSrv := commentService.New(commentData)
@@ -52,7 +52,7 @@ func main() {
 
 	e.POST("/contents", contentHdl.Add(), middleware.JWT([]byte(config.JWT_KEY)))
 	e.GET("/contents", contentHdl.GetAll())
-	e.GET("/contents", contentHdl.GetById(), middleware.JWT([]byte(config.JWT_KEY)))
+	e.GET("/contents/:id", contentHdl.GetById(), middleware.JWT([]byte(config.JWT_KEY)))
 	e.PUT("/contents/:id", contentHdl.Update(), middleware.JWT([]byte(config.JWT_KEY)))
 	e.DELETE("/contents/:id", contentHdl.Delete(), middleware.JWT([]byte(config.JWT_KEY)))
 

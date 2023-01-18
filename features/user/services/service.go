@@ -52,14 +52,13 @@ func (uuc *userUseCase) Login(newUser user.Core) (string, user.Core, error) {
 		res user.Core
 		err error
 	)
-
-	if len(newUser.Email) > 0 {
-		err = helper.Validasi(helper.ToEmailLogin(newUser))
+	if len(newUser.Username) > 0 {
+		err = helper.Validasi(helper.ToUsernameLogin(newUser))
 		if err != nil {
 			return "", user.Core{}, err
 		}
-	} else if len(newUser.Username) > 0 {
-		err = helper.Validasi(helper.ToUsernameLogin(newUser))
+	} else if len(newUser.Email) > 0 {
+		err = helper.Validasi(helper.ToEmailLogin(newUser))
 		if err != nil {
 			return "", user.Core{}, err
 		}
@@ -160,7 +159,8 @@ func (uuc *userUseCase) Update(updateData user.Core, token interface{}, file *mu
 
 		defer src.Close()
 	}
-
+	x := helper.HashPassword(updateData.Password)
+	updateData.Password = x
 	res, err := uuc.qry.Update(uint(id), updateData)
 	// log.Println("res update qry:", res)
 	if err != nil {
