@@ -50,6 +50,7 @@ func PrintErrorResponse(msg string) (int, interface{}) {
 	} else if strings.Contains(msg, "required") {
 		code = http.StatusBadRequest
 	} else {
+		resp["message"] = "data tidak bisa diolah"
 		code = http.StatusInternalServerError
 	}
 

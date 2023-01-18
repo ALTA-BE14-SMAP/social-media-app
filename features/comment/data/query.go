@@ -1,6 +1,7 @@
 package data
 
 import (
+	"errors"
 	"log"
 	"social-media-app/features/comment"
 
@@ -27,6 +28,42 @@ func (cq *CommentQuery) Add(newComment comment.Core, PostID uint, UserId uint) (
 		return comment.Core{}, err
 	}
 	newComment.ID = cnv.ID
-	newComment.Komentator = cnv.User.Name
+	newComment.CreatedAt = cnv.CreatedAt.String()
 	return newComment, nil
+}
+
+func (cq *CommentQuery) ListComments(PostID uint) ([]comment.Core, error) {
+	res := []Comment{}
+
+	err := cq.db.Raw(`
+	SELECT c.id ,c.content, c.created_at, u.name "Komentator"
+	FROM comments c 
+	JOIN users u ON u.id = c.user_id
+	JOIN contents c2 ON c2.id = c.content_id 
+	WHERE c.deleted_at IS NULL 
+	AND c2.id = ?;
+	`, PostID).Scan(&res).Error
+	if err != nil {
+		log.Println("list book query error :", err.Error())
+		return []comment.Core{}, err
+	}
+
+	return ToCoreArr(res), nil
+}
+
+func (cq *CommentQuery) Delete(commentID uint, PostID uint, userID uint) error {
+	comment := Comment{
+		Model: gorm.Model{ID: commentID},
+	}
+	qry := cq.db.Where("user_id = ? AND content_id = ?", userID, PostID).Delete(&comment)
+	if qry.RowsAffected <= 0 {
+		log.Println("delete comment query error : data not found")
+		return errors.New("not found")
+	}
+	err := qry.Error
+	if err != nil {
+		log.Println("delete comment query error :", err.Error())
+		return err
+	}
+	return nil
 }

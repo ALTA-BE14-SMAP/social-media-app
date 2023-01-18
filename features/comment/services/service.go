@@ -22,6 +22,11 @@ func New(ud comment.CommentData) comment.CommentService {
 }
 
 func (cuc *commentUseCase) Add(newComment comment.Core, PostID uint, token interface{}) (comment.Core, error) {
+	err := helper.Validasi(helper.ToComment(newComment))
+	if err != nil {
+		return comment.Core{}, err
+	}
+
 	userID := helper.ExtractToken(token)
 	if userID <= 0 {
 		return comment.Core{}, errors.New("user tidak ditemukan")
@@ -37,4 +42,36 @@ func (cuc *commentUseCase) Add(newComment comment.Core, PostID uint, token inter
 		return comment.Core{}, errors.New(msg)
 	}
 	return res, nil
+}
+
+func (cuc *commentUseCase) ListComments(PostID uint) ([]comment.Core, error) {
+	res, err := cuc.qry.ListComments(PostID)
+	if err != nil {
+		msg := ""
+		if strings.Contains(err.Error(), "not found") {
+			msg = "data tidak ditemukan"
+		} else {
+			msg = "terjadi kesalahan pada server"
+		}
+		return []comment.Core{}, errors.New(msg)
+	}
+	return res, nil
+}
+
+func (cuc *commentUseCase) Delete(commentID uint, PostID uint, token interface{}) error {
+	userID := helper.ExtractToken(token)
+	if userID <= 0 {
+		return errors.New("user tidak ditemukan")
+	}
+	err := cuc.qry.Delete(commentID, PostID, uint(userID))
+	if err != nil {
+		msg := ""
+		if strings.Contains(err.Error(), "not found") {
+			msg = "comment tidak ditemukan"
+		} else {
+			msg = "terjadi kesalahan pada server"
+		}
+		return errors.New(msg)
+	}
+	return nil
 }

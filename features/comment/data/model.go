@@ -30,18 +30,26 @@ func ToCore(data Comment) comment.Core {
 	return comment.Core{
 		ID:         data.ID,
 		Content:    data.Content,
-		CreatedAt:  data.CreatedAt,
-		Komentator: data.User.Name,
+		CreatedAt:  data.CreatedAt.String(),
+		Komentator: data.Komentator,
 	}
 }
 
 func CoreToData(data comment.Core) Comment {
 	return Comment{
 		Model: gorm.Model{
-			ID:        data.ID,
-			CreatedAt: data.CreatedAt,
+			ID: data.ID,
 		},
 		Content:    data.Content,
 		Komentator: data.Komentator,
 	}
+}
+
+func ToCoreArr(data []Comment) []comment.Core {
+	arrRes := []comment.Core{}
+	for _, v := range data {
+		tmp := ToCore(v)
+		arrRes = append(arrRes, tmp)
+	}
+	return arrRes
 }

@@ -2,14 +2,13 @@ package handler
 
 import (
 	"social-media-app/features/comment"
-	"time"
 )
 
 type CommentsResponse struct {
-	ID         uint      `json:"id"`
-	Content    string    `json:"text"`
-	CreatedAt  time.Time `json:"created_at"`
-	Komentator string    `json:"commentator"`
+	ID         uint   `json:"id"`
+	Content    string `json:"text"`
+	CreatedAt  string `json:"created_at"`
+	Komentator string `json:"commentator"`
 }
 
 func ToResponse(data comment.Core) CommentsResponse {
@@ -19,4 +18,13 @@ func ToResponse(data comment.Core) CommentsResponse {
 		CreatedAt:  data.CreatedAt,
 		Komentator: data.Komentator,
 	}
+}
+
+func ToResponseArr(data []comment.Core) []CommentsResponse {
+	res := []CommentsResponse{}
+	for _, v := range data {
+		tmp := ToResponse(v)
+		res = append(res, tmp)
+	}
+	return res
 }

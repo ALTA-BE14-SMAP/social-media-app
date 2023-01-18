@@ -3,6 +3,7 @@ package helper
 import (
 	"errors"
 	"log"
+	"social-media-app/features/comment"
 	"social-media-app/features/user"
 	"strings"
 
@@ -12,7 +13,7 @@ import (
 var validate *validator.Validate
 
 type RegisterRequest struct {
-	Name     string `validate:"required" `
+	Name     string `validate:"required"`
 	Username string `validate:"required,alphanum"`
 	Email    string `validate:"required,email"`
 	Password string
@@ -27,6 +28,16 @@ type LoginUsernameRequest struct {
 }
 type LoginEmailRequest struct {
 	Email string `validate:"required,email"`
+}
+
+type CommentRequest struct {
+	Content string `validate:"required"`
+}
+
+func ToComment(data comment.Core) CommentRequest {
+	return CommentRequest{
+		Content: data.Content,
+	}
 }
 
 func ToRegister(data user.Core) RegisterRequest {

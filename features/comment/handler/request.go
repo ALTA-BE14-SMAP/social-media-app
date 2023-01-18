@@ -3,8 +3,7 @@ package handler
 import "social-media-app/features/comment"
 
 type AddCommentRequest struct {
-	Content    string `json:"text" form:"text"`
-	Komentator string `json:"commentator" form:"commentator"`
+	Content string `json:"text" form:"text"`
 }
 
 func ToCore(data interface{}) *comment.Core {
@@ -14,7 +13,6 @@ func ToCore(data interface{}) *comment.Core {
 	case AddCommentRequest:
 		cnv := data.(AddCommentRequest)
 		res.Content = cnv.Content
-		res.Komentator = cnv.Komentator
 	default:
 		return nil
 	}

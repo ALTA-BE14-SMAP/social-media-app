@@ -195,7 +195,7 @@ A brief description of what this project does and who it's for
 | `phone_number`      | `numeric` | **Optional**.  Numeric|
 | `about_me`      | `string` | **Optional**.  |
 | `Password`      | `string` | **Optional**.  |
-| `image`      | `file` | **Optional**. file must image |
+| `file`      | `file` | **Optional**. file must image |
 
 ##### Responses
 ###### 200 OK
@@ -355,7 +355,7 @@ A brief description of what this project does and who it's for
 			"photo": "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1673870507.png"
 		}
 	],
-	"message": "berhasil lihat get users"
+	"message": "berhasil lihat profil"
 }
 ```
 
@@ -401,6 +401,181 @@ A brief description of what this project does and who it's for
 ```
 ###### 500 Internal Server Error
 
+```javascript
+{
+	"message": "data tidak bisa diolah"
+}
+```
+### Content Add
+
+```http
+  POST /contents
+```
+
+##### Authorization JWT
+| Authentication | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `bearer token`      | `string` | **Required**. Your token key |
+
+##### Form/JSON
+| Field | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `content` | `string` | **Required** |
+| `image` | `image` | **Optional**. must image |
+
+
+##### Responses
+###### 201 Created
+```javascript
+{
+	"message": "posting content berhasil"
+}
+```
+###### 400 Bad Request
+```javascript
+{
+	"message": "field required wajib diisi"
+}
+```
+###### 400 Bad Request
+```javascript
+{
+	"message": "kesalahan input"
+}
+```
+###### 500 Internal Server Error
+```javascript
+{
+	"message": "data tidak bisa diolah"
+}
+```
+### Content GetAll
+```http
+ GET /contents
+```
+
+##### Responses
+###### 200 OK
+```javascript
+{
+    "data": [
+        {
+            "id": 2,
+            "content": "halo gaes",
+            "image": "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1674014577.jpg",
+            "userid": 1,
+            "name": "devangga"
+        },
+        {
+            "id": 3,
+            "content": "spongebob",
+            "image": "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1674014592.jpg",
+            "userid": 1,
+            "name": "devangga"
+        }
+    ],
+    "message": "berhasil menampilkan content"
+}
+```
+###### 404 Not Found
+```javascript
+{
+	"message": " content tidak ditemukan"
+}
+```
+###### 500 Internal Server Error
+```javascript
+{
+	"message": "data tidak bisa diolah"
+}
+```
+### Content Update
+```http
+  PUT /contents
+``` 
+##### Authorization JWT
+| Authentication | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `bearer token`      | `string` | **Required**. Your token key |
+
+##### Multipart Form
+| Field | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `content` | `string` | **Required** |
+| `image` | `image` | **Optional**. must image |
+
+##### Responses
+###### 200 OK
+```javascript
+{
+	"message": "berhasil update content"
+}
+```
+###### 400 Bad Request
+```javascript
+{
+	"message": " Error binding data "
+}
+```
+###### 400 Bad Request
+```javascript
+{
+	"message": "kesalahan input"
+}
+```
+###### 400 Bad Request
+```javascript
+{
+	"message": " format input file tidak dapat dibuka "
+}
+```
+###### 400 Bad Request
+```javascript
+{
+	"message": " format input file type tidak diizinkan "
+}
+```
+###### 401 Unauthorized
+```javascript
+{
+	"message": "invalid or expired jwt"
+}
+```
+###### 500 Internal Server Error
+```javascript
+{
+	"message": "data tidak bisa diolah"
+}
+```
+### Content Delete
+```http
+  DELETE /contents
+```
+
+| Authentication | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `bearer token`      | `string` | **Required**. Your token key |
+
+##### Responses
+###### 200 OK
+```javascript
+{
+    "message": "berhasil delete content"
+}
+```
+###### 400 Bad Request
+```javascript
+{
+	"message": "Kesalahan input"
+}
+```
+###### 401 Unauthorized
+```javascript
+{
+	"message": "invalid or expired jwt"
+}
+```
+###### 500 Internal Server Error
 ```javascript
 {
 	"message": "data tidak bisa diolah"
