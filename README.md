@@ -199,7 +199,7 @@ A brief description of what this project does and who it's for
 | `phone_number`      | `numeric` | **Optional**.  Numeric|
 | `about_me`      | `string` | **Optional**.  |
 | `Password`      | `string` | **Optional**.  |
-| `file`      | `file` | **Optional**. file must image |
+| `image`      | `file` | **Optional**. file must image |
 
 ##### Responses
 ###### 200 OK
