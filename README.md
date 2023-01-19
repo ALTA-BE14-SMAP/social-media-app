@@ -198,7 +198,7 @@ A brief description of what this project does and who it's for
 | `date_of_birth`      | `string` | **Optional**.  |
 | `phone_number`      | `numeric` | **Optional**.  Numeric|
 | `about_me`      | `string` | **Optional**.  |
-| `Password`      | `string` | **Optional**.  |
+| `password`      | `string` | **Optional**.  |
 | `image`      | `file` | **Optional**. file must image |
 
 ##### Responses
