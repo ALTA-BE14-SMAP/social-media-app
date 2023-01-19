@@ -51,6 +51,7 @@ func (cq *contentQuery) GetAll() ([]content.CoreContent, error) {
 	JOIN users u ON u.id = c.user_id 
 	LEFT JOIN comments c2 ON c2.content_id = c.id 
 	WHERE c2.deleted_at IS NULL
+	AND c.deleted_at IS NULL 
 	GROUP BY c.id ;
 	`).Scan(&posts).Error
 	if err != nil {
