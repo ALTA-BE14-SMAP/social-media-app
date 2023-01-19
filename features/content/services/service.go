@@ -3,7 +3,6 @@ package services
 import (
 	"errors"
 	"fmt"
-	"log"
 	"mime/multipart"
 	"social-media-app/features/content"
 	"social-media-app/helper"
@@ -54,14 +53,14 @@ func (cuu *contentUseCase) Add(newContent content.CoreContent, token interface{}
 		defer src.Close()
 	}
 
-	err := cuu.vld.Struct(newContent)
-	if err != nil {
-		log.Println(err)
-		if _, ok := err.(*validator.InvalidValidationError); ok {
-			log.Println(err)
-		}
-		return content.CoreContent{}, errors.New("field required wajib diisi")
-	}
+	// err := cuu.vld.Struct(newContent)
+	// if err != nil {
+	// 	log.Println(err)
+	// 	if _, ok := err.(*validator.InvalidValidationError); ok {
+	// 		log.Println(err)
+	// 	}
+	// 	return content.CoreContent{}, errors.New("field required wajib diisi")
+	// }
 	res, err := cuu.qry.Add(newContent, uint(id))
 
 	if err != nil {

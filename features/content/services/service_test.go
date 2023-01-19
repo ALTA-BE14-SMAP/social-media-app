@@ -131,7 +131,7 @@ func TestAdd(t *testing.T) {
 			Content: "deva",
 			Image:   "www.google.com",
 		}
-		repo.On("Add", inputData, uint(1)).Return(content.CoreContent{}, errors.New("not found")).Once()
+		repo.On("Add", inputData, uint(1)).Return(content.CoreContent{}, errors.New("")).Once()
 		srv := New(repo)
 		_, token := helper.GenerateJWT(1)
 		pToken := token.(*jwt.Token)
@@ -145,3 +145,39 @@ func TestAdd(t *testing.T) {
 	})
 
 }
+
+// func TestGetAll(t *testing.T) {
+// 	repo := mocks.NewContentData(t)
+
+// 	t.Run("content tidak ditemukan"), func(t *testing.T) {
+// 		resData := content.CoreContent {
+// 			{
+// 				ID:       1,
+// 				Content: "sedang ada di paris",
+// 				Image:    "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1673872495.jpeg",
+// 			},
+// 			{
+// 				ID:       2,
+// 				Content: "sedang ada di paris",
+// 				Image:    "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1673872495.jpeg",
+// 			},
+// 			{
+// 				ID:       3,
+// 				Content: "sedang ada di paris",
+// 				Image:    "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1673872495.jpeg",
+// 			},
+// 			{
+// 				ID:       4,
+// 				Content: "sedang ada di paris",
+// 				Image:    "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1673872495.jpeg",
+// 			},
+// 			{
+// 				ID:       5,
+// 				Content: "sedang ada di paris",
+// 				Image:    "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1673872495.jpeg",
+// 			},
+// 		}
+// 		repo.On("")
+// 	}
+
+// }

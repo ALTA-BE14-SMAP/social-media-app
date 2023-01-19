@@ -455,6 +455,43 @@ A brief description of what this project does and who it's for
 }
 ```
 
+### Content GetById
+```http
+ GET /contents/:id
+```
+##### Authorization JWT
+| Authentication | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `bearer token`      | `string` | **Required**. Your token key |
+
+##### Form/JSON
+| Field | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `content` | `string` | **Required** |
+| `image` | `image` | **Optional**. must image |
+
+##### Responses
+###### 201 Created
+```javascript
+{
+	"message": "berhasil menampilkan content"
+}
+```
+###### 400 Bad Request
+```javascript
+{
+	"message": "content tidak ditemukan"
+}
+```
+###### 500 Internal Server Error
+```javascript
+{
+	"message": "data tidak bisa diolah"
+}
+```
+
+
+
 ### Content GetAll
 ```http
  GET /contents
