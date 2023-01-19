@@ -36,7 +36,7 @@ func (cq *CommentQuery) ListComments(PostID uint) ([]comment.Core, error) {
 	res := []Comment{}
 
 	err := cq.db.Raw(`
-	SELECT c.id ,c.content, c.created_at, u.name "Komentator"
+	SELECT c.id ,c.content, c.created_at, u.name "Komentator", u.photo 
 	FROM comments c 
 	JOIN users u ON u.id = c.user_id
 	JOIN contents c2 ON c2.id = c.content_id 

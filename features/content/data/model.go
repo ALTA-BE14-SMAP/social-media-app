@@ -15,6 +15,7 @@ type Contents struct {
 	Pemilik        string
 	DibuatPada     string
 	Comments       []content.Comment `gorm:"foreignKey:ContentID;references:ID"`
+	Photo          string
 	User           User
 }
 
@@ -41,6 +42,7 @@ func ToCores(data Contents) content.CoreContent {
 		Pemilik:        data.Pemilik,
 		CreatedAt:      data.DibuatPada,
 		Comments:       data.Comments,
+		Photo:          data.Photo,
 	}
 }
 

@@ -14,6 +14,7 @@ type CoreContent struct {
 	JumlahKomentar string `json:"number_of_comments" form:"number_of_comments"`
 	Pemilik        string `json:"who_post" form:"who_post"`
 	CreatedAt      string `json:"created_at" form:"created_at"`
+	Photo          string `json:"photo" form:"photo"`
 	Comments       []Comment
 }
 
@@ -23,6 +24,7 @@ type Comment struct {
 	CreatedAt   string `json:"created_at" form:"created_at"`
 	Commentator string `json:"comentator" form:"comentator"`
 	ContentID   uint   `json:"id_post" form:"id_post"`
+	Photo       string `json:"photo" form:"photo"`
 }
 
 type CoreUser struct {

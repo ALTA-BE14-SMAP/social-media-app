@@ -10,10 +10,11 @@ type Comment struct {
 	gorm.Model
 	Content    string
 	Komentator string
+	Photo      string
 	UserID     uint
 	ContentID  uint
-	User       User     `gorm:"foreignKey:UserID;references:ID;"`
-	Contents   Contents `gorm:"foreignKey:UserID;references:ID;"`
+	User       User     `gorm:"foreignKey:UserID;references:ID"`
+	Contents   Contents `gorm:"foreignKey:ContentID;references:ID"`
 }
 
 type User struct {
@@ -32,6 +33,7 @@ func ToCore(data Comment) comment.Core {
 		Content:    data.Content,
 		CreatedAt:  data.CreatedAt.String(),
 		Komentator: data.Komentator,
+		Photo:      data.Photo,
 	}
 }
 
@@ -39,6 +41,7 @@ func CoreToData(data comment.Core) Comment {
 	return Comment{
 		Content:    data.Content,
 		Komentator: data.Komentator,
+		Photo:      data.Photo,
 	}
 }
 

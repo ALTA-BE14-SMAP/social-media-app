@@ -9,6 +9,7 @@ type Core struct {
 	Content    string
 	CreatedAt  string
 	Komentator string
+	Photo      string
 }
 
 type CommentHandler interface {

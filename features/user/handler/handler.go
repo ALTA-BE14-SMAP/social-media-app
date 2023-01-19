@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"log"
 	"net/http"
 	"social-media-app/features/user"
 	"social-media-app/helper"
@@ -67,7 +66,7 @@ func (uc *userControll) Update() echo.HandlerFunc {
 		if err != nil {
 			file = nil
 		}
-		log.Println(file)
+
 		token := c.Get("user")
 		// res, err := uc.srv.Update(input, token, file)
 		_, err = uc.srv.Update(input, token, file)

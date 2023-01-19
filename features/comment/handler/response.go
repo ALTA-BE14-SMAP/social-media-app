@@ -9,6 +9,7 @@ type CommentsResponse struct {
 	Content    string `json:"text"`
 	CreatedAt  string `json:"created_at"`
 	Komentator string `json:"commentator"`
+	Photo      string `json:"photo" form:"photo"`
 }
 
 func ToResponse(data comment.Core) CommentsResponse {
@@ -17,6 +18,7 @@ func ToResponse(data comment.Core) CommentsResponse {
 		Content:    data.Content,
 		CreatedAt:  data.CreatedAt,
 		Komentator: data.Komentator,
+		Photo:      data.Photo,
 	}
 }
 
