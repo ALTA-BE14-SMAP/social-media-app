@@ -11,6 +11,10 @@ import (
 	hd "social-media-app/features/content/handler"
 	sc "social-media-app/features/content/services"
 
+	commentData "social-media-app/features/comment/data"
+	commentHandler "social-media-app/features/comment/handler"
+	commentService "social-media-app/features/comment/services"
+
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -28,6 +32,10 @@ func main() {
 	contentData := dt.New(db)
 	contentSrv := sc.New(contentData)
 	contentHdl := hd.New(contentSrv)
+
+	commentData := commentData.New(db)
+	commentSrv := commentService.New(commentData)
+	commentHdl := commentHandler.New(commentSrv)
 
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.CORS())
@@ -47,6 +55,13 @@ func main() {
 	e.GET("/contents/:id", contentHdl.GetById(), middleware.JWT([]byte(config.JWT_KEY)))
 	e.PUT("/contents/:id", contentHdl.Update(), middleware.JWT([]byte(config.JWT_KEY)))
 	e.DELETE("/contents/:id", contentHdl.Delete(), middleware.JWT([]byte(config.JWT_KEY)))
+
+	e.POST("/comments/:idPost", commentHdl.Add(), middleware.JWT([]byte(config.JWT_KEY)))
+	e.PUT("/comments/:idComment", commentHdl.Update(), middleware.JWT([]byte(config.JWT_KEY)))
+	e.GET("/comments/:idPost", commentHdl.ListComments())
+	e.DELETE("/comments/:idComment", commentHdl.Delete(), middleware.JWT([]byte(config.JWT_KEY)))
+	// e.DELETE("/comments/:idPost/:idComment", commentHdl.Delete(), middleware.JWT([]byte(config.JWT_KEY)))
+
 	if err := e.Start(":8000"); err != nil {
 		log.Println(err.Error())
 	}
