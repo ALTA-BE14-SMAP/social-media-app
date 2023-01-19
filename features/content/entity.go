@@ -15,11 +15,20 @@ type CoreContent struct {
 	Pemilik        string
 	Pembuatan      string
 	Users          CoreUser
+	Comments       CoreComment
 }
 
 type CoreUser struct {
 	ID   uint
 	Name string
+}
+
+type CoreComment struct {
+	ID         uint
+	Content    string
+	Komentator string
+	UserID     uint
+	ContentID  uint
 }
 
 type ContentHandler interface {

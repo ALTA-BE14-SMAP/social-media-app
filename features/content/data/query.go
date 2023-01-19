@@ -48,6 +48,7 @@ func (cq *contentQuery) GetAll() ([]content.CoreContent, error) {
 		log.Println("Get By ID query error", err.Error())
 		return ToCore2(sementara), err
 	}
+	// if err := cq.db.Limit(3).
 	Y := ToCore2(sementara)
 	return Y, nil
 }

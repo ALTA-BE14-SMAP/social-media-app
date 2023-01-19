@@ -14,6 +14,7 @@ type Contents struct {
 	JumlahKomentar string
 	Pemilik        string
 	User           User
+	Comments       []Comment
 }
 
 type User struct {
@@ -29,26 +30,42 @@ type User struct {
 	Contentss   []Contents
 }
 
+type Comment struct {
+	gorm.Model
+	Content    string
+	Komentator string
+	UserID     uint
+	ContentID  uint
+	User       User
+}
+
 func (data *Contents) ToCore() content.CoreContent {
 	return content.CoreContent{
 		ID:             data.ID,
 		Content:        data.Content,
 		Image:          data.Image,
 		UserID:         data.User.ID,
-		JumlahKomentar: data.JumlahKomentar,
+		JumlahKomentar: data.JumlahKomentar, //hitung di query aja
 		Pemilik:        data.User.Name,
 		Pembuatan:      data.CreatedAt.String(),
 		Users: content.CoreUser{
 			ID:   data.User.ID,
 			Name: data.User.Name,
-			// Username: data.User.Username,
-			// Email: data.User.Email,
-			// DateOfBith: data.User.DateOfBith,
-			// Photo: data.User.Photo,
-			// PhoneNumber: data.User.PhoneNumber,
-			// AboutMe: data.User.AboutMe,
-			// Password: data.User.Password,
 		},
+		// Comments: content.CoreComment{
+		// 	ID:         data.Comments.ID,
+		// 	Content:    data.Comments.Content,
+		// 	Komentator: data.Comments.Komentator,
+		// 	UserID:     data.Comments.UserID,
+		// 	ContentID:  data.Comments.ContentID,
+		// },
+		// Username: data.User.Username,
+		// Email: data.User.Email,
+		// DateOfBith: data.User.DateOfBith,
+		// Photo: data.User.Photo,
+		// PhoneNumber: data.User.PhoneNumber,
+		// AboutMe: data.User.AboutMe,
+		// Password: data.User.Password,
 	}
 }
 
