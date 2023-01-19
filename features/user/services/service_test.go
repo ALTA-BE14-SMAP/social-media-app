@@ -318,7 +318,6 @@ func getFileHeader(file *os.File) (*multipart.FileHeader, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	// create *multipart.FileHeader
 	return &multipart.FileHeader{
 		Filename: fileStat.Name(),
@@ -366,6 +365,54 @@ func TestUpdate(t *testing.T) {
 		assert.Equal(t, resData.PhoneNumber, res.PhoneNumber)
 		repo.AssertExpectations(t)
 	})
+
+	// t.Run("Berhasil update user dengan image", func(t *testing.T) {
+	// 	inputData := user.Core{
+	// 		ID:          4,
+	// 		Name:        "Rizal4",
+	// 		Email:       "zaki@gmail.com",
+	// 		Username:    "amrzaki",
+	// 		Photo:       "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1673863241.png",
+	// 		PhoneNumber: "08123022342",
+	// 		AboutMe:     "who am i",
+	// 		Password:    hash,
+	// 	}
+	// 	resData := user.Core{
+	// 		ID:          4,
+	// 		Name:        "Rizal4",
+	// 		Email:       "zaki@gmail.com",
+	// 		Username:    "amrzaki",
+	// 		Photo:       "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1673863241.png",
+	// 		PhoneNumber: "08123022342",
+	// 		AboutMe:     "who am i",
+	// 	}
+
+	// 	file, _ := os.Open("IMG_0159.JPG")
+	// 	byteContainer, err := ioutil.ReadAll(file)
+	// 	var body bytes.Buffer
+	// 	// fileMock := testFile{"file", "file1", []byte("hello")}
+	// 	cnv := &multipart.FileHeader{
+	// 		Filename: file.Name(),
+	// 	}
+	// 	mw := multipart.NewWriter(&body)
+	// 	fw, err := mw.CreateFormField("image")
+	// 	n, err := fw.Write(byteContainer)
+
+	// 	repo.On("Update", uint(4), inputData).Return(resData, cnv).Once()
+	// 	srv := New(repo)
+
+	// 	_, token := helper.GenerateJWT(4)
+	// 	pToken := token.(*jwt.Token)
+	// 	pToken.Valid = true
+	// 	inputData.Password = password
+	// 	res, err := srv.Update(inputData, pToken, cnv)
+	// 	assert.Nil(t, err)
+	// 	assert.Equal(t, resData.ID, res.ID)
+	// 	assert.Equal(t, resData.Name, res.Name)
+	// 	assert.Equal(t, resData.Email, res.Email)
+	// 	assert.Equal(t, resData.PhoneNumber, res.PhoneNumber)
+	// 	repo.AssertExpectations(t)
+	// })
 
 	t.Run("jwt tidak valid", func(t *testing.T) {
 		srv := New(repo)
@@ -516,35 +563,6 @@ func TestUpdate(t *testing.T) {
 		assert.ErrorContains(t, err, "tidak ditemukan")
 		assert.Equal(t, uint(0), res.ID)
 	})
-
-	// t.Run("format input file tidak dapat dibuka", func(t *testing.T) {
-	// 	inputData := user.Core{
-	// 		ID:          4,
-	// 		Name:        "Rizal4",
-	// 		Email:       "zaki@gmail.com",
-	// 		Username:    "amrzaki",
-	// 		Photo:       "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1673863241.png",
-	// 		PhoneNumber: "08123022342",
-	// 		AboutMe:     "who am i",
-	// 	}
-	// 	// repo.On("Update", uint(4), inputData).Return(user.Core{}, errors.New("terdapat masalah pada server")).Once()
-
-	// 	file, err := os.Open("../../../mocks/IMG_0225.jpg")
-	// 	if err != nil {
-	// 		log.Println(err)
-	// 	}
-	// 	image, _ := getFileHeader(file)
-
-	// 	srv := New(repo)
-	// 	_, token := helper.GenerateJWT(4)
-	// 	pToken := token.(*jwt.Token)
-	// 	pToken.Valid = true
-	// 	inputData.Password = password
-	// 	res, err := srv.Update(inputData, pToken, image)
-	// 	assert.NotNil(t, err)
-	// 	assert.ErrorContains(t, err, "format")
-	// 	assert.Equal(t, uint(0), res.ID)
-	// })
 
 	t.Run("email/username sudah terdaftar", func(t *testing.T) {
 		inputData := user.Core{
