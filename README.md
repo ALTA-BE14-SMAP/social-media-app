@@ -4,7 +4,6 @@
 A brief description of what this project does and who it's for
 
 
-
 ## Tools
 
 **Backend:** 
@@ -32,9 +31,6 @@ A brief description of what this project does and who it's for
 
 ![GitHub](https://img.shields.io/badge/github%20Project-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
 ![Discord](https://img.shields.io/badge/Discord-%237289DA.svg?style=for-the-badge&logo=discord&logoColor=white)
-
-
-
 
 
 ## Installation
@@ -83,6 +79,8 @@ To deploy this project run
 ```
 
 
+## Database Schema:
+<p><img width="850" src="https://github.com/ALTA-BE14-SMAP/social-media-app/blob/main/Media_Sosial_App_ERD.drawio_1.png"></p>
 # API Reference
 
 ## IP Demo : https://projectfebe.online/
