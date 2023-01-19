@@ -13,8 +13,8 @@ type CoreContent struct {
 	UserID         uint   `json:"user_id" form:"user_id"`
 	JumlahKomentar string `json:"number_of_comments" form:"number_of_comments"`
 	Pemilik        string `json:"who_post" form:"who_post"`
-	// Pembuatan      string
-	Comments []Comment
+	CreatedAt      string `json:"created_at" form:"created_at"`
+	Comments       []Comment
 }
 
 type Comment struct {
