@@ -4,9 +4,77 @@
 A brief description of what this project does and who it's for
 
 
+## Tools
+
+**Backend:** 
+![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
+![Visual Studio Code](https://img.shields.io/badge/Visual%20Studio%20Code-0078d7.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white)
+![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)
+![Go](https://img.shields.io/badge/go-%2300ADD8.svg?style=for-the-badge&logo=go&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
+![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)
+![Insomnia](https://img.shields.io/badge/Insomnia-black?style=for-the-badge&logo=insomnia&logoColor=5849BE)
+
+**Deployment:** 
+![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
+![Cloudflare](https://img.shields.io/badge/Cloudflare-F38020?style=for-the-badge&logo=Cloudflare&logoColor=white)
+
+**Communication:**  
+![GitHub](https://img.shields.io/badge/github%20Project-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
+![Discord](https://img.shields.io/badge/Discord-%237289DA.svg?style=for-the-badge&logo=discord&logoColor=white)
+
+
+## Installation
+
+Clone the repo
+
+```bash
+   git clone https://github.com/ALTA-BE14-SMAP/social-media-app.git
+   cd social-media-app
+   touch local.env
+```
+open the .env file with your favorite editor, then write the required variables as below:
+
+    
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file
+
+`DBUSER` = "ENTER YOUR DATABASE USER"
+
+`DBPASS` = "ENTER YOUR DATABASE PASSWORD"
+
+`DBHOST` = "ENTER YOUR DATABASE HOST"
+
+`DBPORT` = "ENTER YOUR DATABASE PORT"
+
+`DBNAME` = "ENTER YOUR DATABASE NAME"
+
+`JWTKEY` = "ENTER YOUR KEY JWT"
+
+`AWSREGION` = "ENTER YOUR AWS REGION"
+
+`S3KEY` = "ENTER YOUR AWS ACCESS KEY ID"
+
+`S3SECRET`  = "ENTER YOUR AWS SECRET KEY ID"
+
+`AWSBUCKET` = "ENTER YOUR AWS S3 BUCKET"
+
+
+## Deployment
+
+To deploy this project run
+
+```bash
+  go run .
+```
+
+
 # API Reference
 
-## IP Server : 54.254.27.167
+## IP Demo : https://projectfebe.online/
 
 
 
@@ -455,43 +523,6 @@ A brief description of what this project does and who it's for
 }
 ```
 
-### Content GetById
-```http
- GET /contents/:id
-```
-##### Authorization JWT
-| Authentication | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `bearer token`      | `string` | **Required**. Your token key |
-
-##### Form/JSON
-| Field | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `content` | `string` | **Required** |
-| `image` | `image` | **Optional**. must image |
-
-##### Responses
-###### 201 Created
-```javascript
-{
-	"message": "berhasil menampilkan content"
-}
-```
-###### 400 Bad Request
-```javascript
-{
-	"message": "content tidak ditemukan"
-}
-```
-###### 500 Internal Server Error
-```javascript
-{
-	"message": "data tidak bisa diolah"
-}
-```
-
-
-
 ### Content GetAll
 ```http
  GET /contents
@@ -535,7 +566,7 @@ A brief description of what this project does and who it's for
 
 ### Content Update
 ```http
-  PUT /contents
+  PUT /contents/{idPost}
 ``` 
 ##### Authorization JWT
 | Authentication | Type     | Description                       |
@@ -547,6 +578,11 @@ A brief description of what this project does and who it's for
 | :-------- | :------- | :------------------------- |
 | `content` | `string` | **Required** |
 | `image` | `image` | **Optional**. must image |
+
+##### Parameters Path
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `{idPost}`      | `numuric` | **Required**. Your id post/content |
 
 ##### Responses
 ###### 200 OK
@@ -594,12 +630,17 @@ A brief description of what this project does and who it's for
 
 ### Content Delete
 ```http
-  DELETE /contents
+  DELETE /contents/{idPost}
 ```
 
 | Authentication | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `bearer token`      | `string` | **Required**. Your token key |
+
+##### Parameters Path
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `{idPost}`      | `numuric` | **Required**. Your id post/content |
 
 ##### Responses
 ###### 200 OK
@@ -704,25 +745,29 @@ A brief description of what this project does and who it's for
 			"id": 1,
 			"text": "Happy Second Birthday nak kicik❤️Terimakasih sudah menjadikanku ibu, selalu setia jadi teman ibu👶",
 			"created_at": "2023-01-18 18:26:30.472 +0700 WIB",
-			"commentator": "Budi Sukses"
+			"commentator": "Budi Sukses",
+            "photo": "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1674166643.jpg"
 		},
 		{
 			"id": 2,
 			"text": "You can add any url params you want there and it will show you the url preview above it.",
 			"created_at": "2023-01-18 18:30:55.665 +0700 WIB",
-			"commentator": "Budi Sukses"
+			"commentator": "Budi Sukses",
+            "photo": "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1674166643.jpg"
 		},
 		{
 			"id": 3,
 			"text": "Sy jg pengen punya app kayak gini",
 			"created_at": "2023-01-18 18:33:24.388 +0700 WIB",
-			"commentator": "Budi Sukses"
+			"commentator": "Budi Sukses",
+            "photo": "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1674166643.jpg"
 		},
 		{
 			"id": 4,
 			"text": "Tutorial yg paling banyak dicari tentang golang menurut saya adalah cara Deploy ke production di hosting yg murah untuk produktion,",
 			"created_at": "2023-01-18 18:51:15.698 +0700 WIB",
-			"commentator": "Budi Sukses"
+			"commentator": "Budi Sukses",
+            "photo": "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1674166643.jpg"
 		}
 	],
 	"message": "Berhasil melihat list comments"
