@@ -52,7 +52,7 @@ func (cc *contentControll) GetAll() echo.HandlerFunc {
 			log.Println("trouble :  ", err.Error())
 			return c.JSON(helper.PrintErrorResponse(err.Error()))
 		}
-		return c.JSON(http.StatusOK, helper.PrintSuccessReponse("berhasil menampilkan content", ToResponseArr(res)))
+		return c.JSON(http.StatusOK, helper.PrintSuccessReponse("berhasil menampilkan content", res))
 	}
 }
 

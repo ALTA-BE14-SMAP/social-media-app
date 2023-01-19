@@ -7,28 +7,27 @@ import (
 )
 
 type CoreContent struct {
-	ID             uint
+	ID             uint   `json:"id" form:"id"`
 	Content        string `validate:"required" json:"content" form:"content"`
 	Image          string `json:"image" form:"image"`
-	UserID         uint
-	JumlahKomentar string
-	Pemilik        string
-	Pembuatan      string
-	Users          CoreUser
-	Comments       CoreComment
+	UserID         uint   `json:"user_id" form:"user_id"`
+	JumlahKomentar string `json:"number_of_comments" form:"number_of_comments"`
+	Pemilik        string `json:"who_post" form:"who_post"`
+	// Pembuatan      string
+	Comments []Comment
+}
+
+type Comment struct {
+	ID          uint   `json:"id" form:"id"`
+	Text        string `json:"text" form:"text"`
+	CreatedAt   string `json:"created_at" form:"created_at"`
+	Commentator string `json:"comentator" form:"comentator"`
+	ContentID   uint   `json:"id_post" form:"id_post"`
 }
 
 type CoreUser struct {
 	ID   uint
 	Name string
-}
-
-type CoreComment struct {
-	ID         uint
-	Content    string
-	Komentator string
-	UserID     uint
-	ContentID  uint
 }
 
 type ContentHandler interface {
