@@ -15,12 +15,10 @@ type ContentResponse struct {
 
 func ToResponse(data content.CoreContent) ContentResponse {
 	return ContentResponse{
-		ID:        data.ID,
-		Content:   data.Content,
-		Image:     data.Image,
-		UserID:    data.Users.ID,
-		Name:      data.Users.Name,
-		Pembuatan: data.Pembuatan,
+		ID:      data.ID,
+		Content: data.Content,
+		Image:   data.Image,
+		// Pembuatan: data.Pembuatan,
 	}
 }
 

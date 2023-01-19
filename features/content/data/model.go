@@ -13,6 +13,7 @@ type Contents struct {
 	UserID         uint
 	JumlahKomentar string
 	Pemilik        string
+	Comments       []content.Comment `gorm:"foreignKey:ContentID;references:ID"`
 	User           User
 }
 
@@ -29,6 +30,27 @@ type User struct {
 	Contentss   []Contents
 }
 
+func ToCores(data Contents) content.CoreContent {
+	return content.CoreContent{
+		ID:             data.ID,
+		Content:        data.Content,
+		Image:          data.Image,
+		UserID:         data.UserID,
+		JumlahKomentar: data.JumlahKomentar,
+		Pemilik:        data.Pemilik,
+		Comments:       data.Comments,
+	}
+}
+
+func ToCoresArr(data []Contents) []content.CoreContent {
+	arrRes := []content.CoreContent{}
+	for _, v := range data {
+		tmp := ToCores(v)
+		arrRes = append(arrRes, tmp)
+	}
+	return arrRes
+}
+
 func (data *Contents) ToCore() content.CoreContent {
 	return content.CoreContent{
 		ID:             data.ID,
@@ -37,18 +59,18 @@ func (data *Contents) ToCore() content.CoreContent {
 		UserID:         data.User.ID,
 		JumlahKomentar: data.JumlahKomentar,
 		Pemilik:        data.User.Name,
-		Pembuatan:      data.CreatedAt.String(),
-		Users: content.CoreUser{
-			ID:   data.User.ID,
-			Name: data.User.Name,
-			// Username: data.User.Username,
-			// Email: data.User.Email,
-			// DateOfBith: data.User.DateOfBith,
-			// Photo: data.User.Photo,
-			// PhoneNumber: data.User.PhoneNumber,
-			// AboutMe: data.User.AboutMe,
-			// Password: data.User.Password,
-		},
+		// Pembuatan:      data.CreatedAt.String(),
+		// Users: content.CoreUser{
+		// 	ID:   data.User.ID,
+		// 	Name: data.User.Name,
+		// 	// Username: data.User.Username,
+		// 	// Email: data.User.Email,
+		// 	// DateOfBith: data.User.DateOfBith,
+		// 	// Photo: data.User.Photo,
+		// 	// PhoneNumber: data.User.PhoneNumber,
+		// 	// AboutMe: data.User.AboutMe,
+		// 	// Password: data.User.Password,
+		// },
 	}
 }
 
@@ -57,7 +79,7 @@ func CoreToData(data content.CoreContent) Contents {
 		Model:   gorm.Model{ID: data.ID},
 		Content: data.Content,
 		Image:   data.Image,
-		UserID:  data.Users.ID,
+		// UserID:  data.Users.ID,
 	}
 }
 
