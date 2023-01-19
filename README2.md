@@ -47,7 +47,7 @@ This application is made to make work easier and save time
 2. base url : https://www.projectfebe.online/ 
 
 #  📉 Database Schema:
-![ERD](https://github.com/Capstone-Group3-Mentutor/Back_End/blob/main/ERD%20Mentutor.png?raw=true)
+![ERD](https://github.com/ALTA-BE14-SMAP/social-media-app/blob/89cb41f7a1a3c20c1e93de429417e7c434f5dccc/Media_Sosial_App_ERD.drawio_1.png?raw=true)
 
 # Contributor
 - Ari  :  [![GitHub](https://img.shields.io/badge/Ari-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/amrizal94)
