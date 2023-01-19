@@ -46,7 +46,7 @@ func (cq *contentQuery) GetAll() ([]content.CoreContent, error) {
 	posts := []Contents{}
 	comments := []content.Comment{}
 	err := cq.db.Raw(`
-	SELECT c.id , c.content, c.created_at "CreatedAt" , c.image, c.user_id ,u.name "Pemilik", COUNT( c2.id) "Jumlah Komentar" 
+	SELECT c.id , c.content, c.created_at "DibuatPada" , c.image, c.user_id ,u.name "Pemilik", COUNT( c2.id) "Jumlah Komentar" 
 	FROM contents c 
 	JOIN users u ON u.id = c.user_id 
 	LEFT JOIN comments c2 ON c2.content_id = c.id 
