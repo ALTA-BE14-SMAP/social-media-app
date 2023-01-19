@@ -148,36 +148,34 @@ func TestAdd(t *testing.T) {
 
 // func TestGetAll(t *testing.T) {
 // 	repo := mocks.NewContentData(t)
-
-// 	t.Run("content tidak ditemukan"), func(t *testing.T) {
-// 		resData := content.CoreContent {
+// 	t.Run("oashdoiashdoiasdoi", func(t *testing.T) {
+// 		resData := []content.CoreContent{
 // 			{
-// 				ID:       1,
+// 				ID:      1,
 // 				Content: "sedang ada di paris",
-// 				Image:    "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1673872495.jpeg",
+// 				Image:   "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1673872495.jpeg",
 // 			},
 // 			{
-// 				ID:       2,
+// 				ID:      2,
 // 				Content: "sedang ada di paris",
-// 				Image:    "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1673872495.jpeg",
+// 				Image:   "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1673872495.jpeg",
 // 			},
 // 			{
-// 				ID:       3,
+// 				ID:      3,
 // 				Content: "sedang ada di paris",
-// 				Image:    "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1673872495.jpeg",
+// 				Image:   "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1673872495.jpeg",
 // 			},
 // 			{
-// 				ID:       4,
+// 				ID:      4,
 // 				Content: "sedang ada di paris",
-// 				Image:    "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1673872495.jpeg",
+// 				Image:   "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1673872495.jpeg",
 // 			},
 // 			{
-// 				ID:       5,
+// 				ID:      5,
 // 				Content: "sedang ada di paris",
-// 				Image:    "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1673872495.jpeg",
+// 				Image:   "https://mediasosial.s3.ap-southeast-1.amazonaws.com/images/profile/1673872495.jpeg",
 // 			},
 // 		}
-// 		repo.On("")
-// 	}
+// 	})
 
 // }

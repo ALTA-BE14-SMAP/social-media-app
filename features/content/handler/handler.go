@@ -58,12 +58,18 @@ func (cc *contentControll) GetAll() echo.HandlerFunc {
 
 func (cc *contentControll) GetById() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		tes, errBind := strconv.Atoi(c.Param("id"))
+		// id := c.QueryParam("idPost")
+		// idPost, err := strconv.Atoi(id)
+		// if err != nil {
+		// 	log.Println("trouble convert param id post:  ", err.Error())
+		// 	return c.JSON(helper.PrintErrorResponse(err.Error()))
+		// }
+		idContent, errBind := strconv.Atoi(c.Param("id"))
 		if errBind != nil {
 			return c.JSON(helper.PrintErrorResponse("Data not found"))
 		}
 		token := c.Get("user")
-		res, err2 := cc.srv.GetById(token, uint(tes))
+		res, err2 := cc.srv.GetById(token, uint(idContent))
 		if err2 != nil {
 			return c.JSON(helper.PrintErrorResponse(err2.Error()))
 		}

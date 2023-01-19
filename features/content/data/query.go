@@ -86,10 +86,19 @@ func (cq *contentQuery) GetAll() ([]content.CoreContent, error) {
 	return ToCoresArr(posts), nil
 }
 
-func (cq *contentQuery) GetById(id2 uint, tes uint) ([]content.CoreContent, error) {
+func (cq *contentQuery) GetById(idUser uint, idContent uint) ([]content.CoreContent, error) {
 	var sementara []Contents
 
-	if err := cq.db.Preload("User").Where("user_id = ?", tes).Find(&sementara).Error; err != nil {
+	if idContent == 0 {
+		if err := cq.db.Preload("User").Where("user_id = ?", idUser).Find(&sementara).Error; err != nil {
+			log.Println("Get By ID query error", err.Error())
+			return ToCore2(sementara), err
+		}
+		X := ToCore2(sementara)
+		return X, nil
+	}
+
+	if err := cq.db.Preload("User").Where("user_id = ? AND id = ?", idUser, idContent).Find(&sementara).Error; err != nil {
 		log.Println("Get By ID query error", err.Error())
 		return ToCore2(sementara), err
 	}

@@ -91,9 +91,9 @@ func (cuu *contentUseCase) GetAll() ([]content.CoreContent, error) {
 	return res, nil
 }
 
-func (cuu *contentUseCase) GetById(token interface{}, tes uint) ([]content.CoreContent, error) {
-	id2 := helper.ExtractToken(token)
-	res, err := cuu.qry.GetById(uint(id2), tes)
+func (cuu *contentUseCase) GetById(token interface{}, idContent uint) ([]content.CoreContent, error) {
+	idUser := helper.ExtractToken(token)
+	res, err := cuu.qry.GetById(uint(idUser), idContent)
 	if err != nil {
 		msg := ""
 		if strings.Contains(err.Error(), "not found") {
