@@ -21,8 +21,8 @@ type Contents struct {
 type User struct {
 	gorm.Model
 	Name        string
-	Username    string
-	Email       string
+	Username    string `gorm:"unique"`
+	Email       string `gorm:"unique"`
 	DateOfBith  string
 	Photo       string
 	PhoneNumber string

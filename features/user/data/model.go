@@ -10,8 +10,8 @@ type Users struct {
 	gorm.Model
 	// Books    []data.Books `gorm:"foreignKey:UserID"`
 	Name        string
-	Username    string `gorm:"unique,size:191"`
-	Email       string `gorm:"unique,size:191"`
+	Username    string `gorm:"unique"`
+	Email       string `gorm:"unique"`
 	DateOfBith  string
 	Photo       string
 	PhoneNumber string
