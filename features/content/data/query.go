@@ -72,6 +72,7 @@ func (cq *contentQuery) GetAll() ([]content.CoreContent, error) {
 		if err != nil {
 			log.Println("list book query error :", err.Error())
 		} else {
+
 			posts[i].Comments = append(posts[i].Comments, comments...)
 		}
 	}
