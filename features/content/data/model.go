@@ -11,7 +11,7 @@ type Contents struct {
 	Content        string
 	Image          string
 	UserID         uint
-	JumlahKomentar string
+	JumlahKomentar uint
 	Pemilik        string
 	DibuatPada     string
 	Comments       []content.Comment `gorm:"foreignKey:ContentID;references:ID"`

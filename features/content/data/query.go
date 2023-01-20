@@ -46,7 +46,7 @@ func (cq *contentQuery) GetAll() ([]content.CoreContent, error) {
 	posts := []Contents{}
 	comments := []content.Comment{}
 	err := cq.db.Raw(`
-	SELECT c.id , c.content, c.created_at "DibuatPada" , c.image, c.user_id ,u.name "Pemilik", COUNT( c2.id) "Jumlah Komentar", u.photo  
+	SELECT c.id , c.content, c.created_at "DibuatPada" , c.image, c.user_id ,u.name "Pemilik", COUNT( c2.id) "JumlahKomentar", u.photo  
 	FROM contents c 
 	JOIN users u ON u.id = c.user_id 
 	LEFT JOIN comments c2 ON c2.content_id = c.id 
@@ -71,10 +71,11 @@ func (cq *contentQuery) GetAll() ([]content.CoreContent, error) {
 		`, posts[i].ID).Scan(&comments).Error
 		if err != nil {
 			log.Println("list book query error :", err.Error())
-		} else {
-
+		}
+		if posts[i].ID == comments[0].ContentID {
 			posts[i].Comments = append(posts[i].Comments, comments...)
 		}
+
 	}
 	// log.Println(posts)
 

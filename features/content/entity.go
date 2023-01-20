@@ -7,15 +7,15 @@ import (
 )
 
 type CoreContent struct {
-	ID             uint   `json:"id" form:"id"`
-	Content        string `validate:"required" json:"content" form:"content"`
-	Image          string `json:"image" form:"image"`
-	UserID         uint   `json:"user_id" form:"user_id"`
-	JumlahKomentar string `json:"number_of_comments" form:"number_of_comments"`
-	Pemilik        string `json:"who_post" form:"who_post"`
-	CreatedAt      string `json:"created_at" form:"created_at"`
-	Photo          string `json:"photo" form:"photo"`
-	Comments       []Comment
+	ID             uint      `json:"id" form:"id"`
+	Content        string    `validate:"required" json:"content" form:"content"`
+	Image          string    `json:"image" form:"image"`
+	UserID         uint      `json:"user_id" form:"user_id"`
+	JumlahKomentar uint      `json:"number_of_comments" form:"number_of_comments"`
+	Pemilik        string    `json:"who_post" form:"who_post"`
+	CreatedAt      string    `json:"created_at" form:"created_at"`
+	Photo          string    `json:"photo" form:"photo"`
+	Comments       []Comment `json:"comments" form:"comments"`
 }
 
 type Comment struct {
