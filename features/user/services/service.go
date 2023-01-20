@@ -159,7 +159,6 @@ func (uuc *userUseCase) Update(updateData user.Core, token interface{}, file *mu
 
 		defer src.Close()
 	}
-	log.Println(len(updateData.Password) > 0)
 	if len(updateData.Password) > 0 {
 		updateData.Password = helper.HashPassword(updateData.Password)
 	}
